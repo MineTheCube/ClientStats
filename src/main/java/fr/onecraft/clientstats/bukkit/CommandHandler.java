@@ -53,15 +53,15 @@ public class CommandHandler extends CommandRegister {
 
                 for (Integer version : plugin.getProtocolJoined().values()) {
                     total++;
-                    Pair<String, Integer> entry = versions.get(version);
-                    if (entry == null) {
+                    Pair<String, Integer> pair = versions.get(version);
+                    if (pair == null) {
                         String versionName = plugin.getVersionName(version);
                         if (versionName != null) {
                             versions.put(version, MutablePair.of(versionName, 1));
                         }
                     } else {
-                        entry.setValue(entry.getValue() + 1);
-                        versions.put(version, entry);
+                        pair.setRight(pair.getRight() + 1);
+                        versions.put(version, pair);
                     }
                 }
 
@@ -96,15 +96,15 @@ public class CommandHandler extends CommandRegister {
                 for (Player online : Bukkit.getOnlinePlayers()) {
                     total++;
                     int version = plugin.getProtocol(online.getUniqueId());
-                    Pair<String, Integer> entry = versions.get(version);
-                    if (entry == null) {
+                    Pair<String, Integer> pair = versions.get(version);
+                    if (pair == null) {
                         String versionName = plugin.getVersionName(version);
                         if (versionName != null) {
                             versions.put(version, MutablePair.of(versionName, 1));
                         }
                     } else {
-                        entry.setValue(entry.getValue() + 1);
-                        versions.put(version, entry);
+                        pair.setValue(pair.getValue() + 1);
+                        versions.put(version, pair);
                     }
                 }
 
