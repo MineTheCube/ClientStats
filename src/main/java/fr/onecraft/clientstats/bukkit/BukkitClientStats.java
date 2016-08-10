@@ -28,7 +28,7 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
     private double averagePlaytime = 0;
     private int playtimeRatio = 0;
 
-    private AbstractProvider provider;
+    private Provider provider;
 
     @Override
     public void enable() {
@@ -95,8 +95,7 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
     }
 
     @Override
-    public void start() {
-    }
+    public void start() {}
 
     @Override
     public void disable() {
@@ -169,13 +168,13 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
         return Pair.of(version, versionName);
     }
 
-    public void incrementJoined(Player p, boolean newPlayer) {
+    public void registerJoin(Player p, boolean isNew) {
         joined.put(p, getProtocol(p.getUniqueId()));
         totalJoined++;
-        if (newPlayer) totalNewPlayers++;
+        if (isNew) totalNewPlayers++;
     }
 
-    public void addPlaytime(long playtimeMillis) {
+    public void registerPlaytime(long playtimeMillis) {
         long playtimeSeconds = playtimeMillis / 1000;
         playtimeRatio++;
         averagePlaytime += (playtimeSeconds - averagePlaytime) / playtimeRatio;
