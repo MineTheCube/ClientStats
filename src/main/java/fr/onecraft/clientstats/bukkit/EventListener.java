@@ -9,14 +9,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class EventListener extends EventRegister {
 
-	private final BukkitClientStats plugin = Core.instance();
+    private final BukkitClientStats plugin = Core.instance();
 
     private final PlayerMap<Long> playtimes = new PlayerMap<>();
 
     @EventHandler
-    @SuppressWarnings("ConstantConditions")
     public void onPlayerJoin(PlayerJoinEvent e) {
-    	plugin.incrementJoined(e.getPlayer(), !e.getPlayer().hasPlayedBefore());
+        plugin.incrementJoined(e.getPlayer(), !e.getPlayer().hasPlayedBefore());
         playtimes.put(e.getPlayer(), System.currentTimeMillis());
     }
 
@@ -24,7 +23,7 @@ public class EventListener extends EventRegister {
     public void onPlayerQuit(PlayerQuitEvent e) {
         Long playtime = playtimes.remove(e.getPlayer());
         if (playtime != null) {
-            plugin.addPlaytime(System.currentTimeMillis() -  playtime);
+            plugin.addPlaytime(System.currentTimeMillis() - playtime);
         }
     }
 

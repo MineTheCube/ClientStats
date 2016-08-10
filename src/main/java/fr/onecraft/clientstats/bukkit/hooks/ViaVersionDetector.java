@@ -4,12 +4,12 @@ import org.bukkit.Bukkit;
 
 public class ViaVersionDetector {
 
-	public static boolean isUsable() {
-		return Bukkit.getPluginManager().isPluginEnabled("ViaVersion");
-	}
+    public static boolean isUsable() {
+        return Bukkit.getPluginManager().isPluginEnabled("ViaVersion");
+    }
 
-	public static AbstractProvider getProvider() {
-		return new ViaVersionProvider();
-	}
+    public static AbstractProvider getProvider() {
+        return new ViaVersionProvider();
+    }
 
 }

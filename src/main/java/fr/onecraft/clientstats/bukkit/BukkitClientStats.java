@@ -18,20 +18,20 @@ import java.util.Map;
 import java.util.UUID;
 
 public class BukkitClientStats extends Core implements ClientStatsAPI {
-	
-	protected String PREFIX = "§9[ClientStats] §f";
-	protected String SUBLINE = "§f";
-	
-	private final PlayerMap<Integer> joined = new PlayerMap<>();
-	private int totalJoined = 0;
-	private int totalNewPlayers = 0;
-	private double averagePlaytime = 0;
-	private int playtimeRatio = 0;
 
-	private AbstractProvider provider;
+    protected String PREFIX = "§9[ClientStats] §f";
+    protected String SUBLINE = "§f";
 
-	@Override
-	public void enable() {
+    private final PlayerMap<Integer> joined = new PlayerMap<>();
+    private int totalJoined = 0;
+    private int totalNewPlayers = 0;
+    private double averagePlaytime = 0;
+    private int playtimeRatio = 0;
+
+    private AbstractProvider provider;
+
+    @Override
+    public void enable() {
 
         // Version detection
         if (ViaVersionDetector.isUsable()) provider = ViaVersionDetector.getProvider();
@@ -53,19 +53,19 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
         // Register Event
         new EventListener().register();
 
-		// Handle command
-		new CommandHandler().register("clientstats");
+        // Handle command
+        new CommandHandler().register("clientstats");
 
         // Api is ready
-	    ClientStats.setApi(this);
+        ClientStats.setApi(this);
 
     }
-	
-	@Override
-	public void reload() {
-		
-		// Save config if it doesn't exist
-		saveDefaultConfig();
+
+    @Override
+    public void reload() {
+
+        // Save config if it doesn't exist
+        saveDefaultConfig();
 
         // v2.7.4
         Object help = getConfig().get("messages.commands.help");
@@ -80,42 +80,43 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
         }
 
         // Reload to get latest values
-		reloadConfig();
+        reloadConfig();
 
         // Copy headers and new values
         getConfig().options().copyDefaults(true).copyHeader(true);
 
         // And save it
-		saveConfig();
-		
-		// Get prefixes
-		PREFIX = ChatUtils.colorize(config().getString("messages.prefix"));
-		SUBLINE = ChatUtils.colorize(config().getString("messages.subline"));
+        saveConfig();
 
-	}
-	
-	@Override
-	public void start() {}
-	
-	@Override
-	public void disable() {
-        // Remove api
-        ClientStats.setApi(null);
-	}
+        // Get prefixes
+        PREFIX = ChatUtils.colorize(config().getString("messages.prefix"));
+        SUBLINE = ChatUtils.colorize(config().getString("messages.subline"));
+
+    }
 
     @Override
-	public void resetStats() {
-		joined.clear();
-		totalJoined = 0;
+    public void start() {
+    }
+
+    @Override
+    public void disable() {
+        // Remove api
+        ClientStats.setApi(null);
+    }
+
+    @Override
+    public void resetStats() {
+        joined.clear();
+        totalJoined = 0;
         totalNewPlayers = 0;
         averagePlaytime = 0;
         playtimeRatio = 0;
-	}
+    }
 
-	@Override
-	public int getTotalJoined() {
-		return totalJoined;
-	}
+    @Override
+    public int getTotalJoined() {
+        return totalJoined;
+    }
 
     @Override
     public int getTotalNewPlayers() {
@@ -133,40 +134,40 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
     }
 
     @Override
-	public Map<UUID, Integer> getProtocolJoined() {
-		return Collections.unmodifiableMap(joined);
-	}
+    public Map<UUID, Integer> getProtocolJoined() {
+        return Collections.unmodifiableMap(joined);
+    }
 
-	@Override
-	public String getVersionName(int version) {
-		String versionName = config().getString("versions." + version);
-	    
-	    if (versionName == null) {
-    		getLogger().severe("Missing version: versions." + version);
-	    	versionName = config().getString("versions.0");
-	    	
-	    	if (versionName == null) {
-	    		getLogger().severe("Missing message: versions.0");
-	    		return "Unknown";
-	    	}
-	    }
-	    
-	    return versionName;
-	}
+    @Override
+    public String getVersionName(int version) {
+        String versionName = config().getString("versions." + version);
 
-	@Override
-	public int getProtocol(UUID player) {
+        if (versionName == null) {
+            getLogger().severe("Missing version: versions." + version);
+            versionName = config().getString("versions.0");
+
+            if (versionName == null) {
+                getLogger().severe("Missing message: versions.0");
+                return "Unknown";
+            }
+        }
+
+        return versionName;
+    }
+
+    @Override
+    public int getProtocol(UUID player) {
         Player p = Players.get(player);
         return p != null ? provider.getProtocol(p) : 0;
-	}
+    }
 
-	@Override
-	public Pair<Integer, String> getVersion(UUID player) {
-		int version = getProtocol(player);
+    @Override
+    public Pair<Integer, String> getVersion(UUID player) {
+        int version = getProtocol(player);
         if (version == 0) return null;
-		String versionName = getVersionName(version);
-	    return Pair.of(version, versionName);
-	}
+        String versionName = getVersionName(version);
+        return Pair.of(version, versionName);
+    }
 
     public void incrementJoined(Player p, boolean newPlayer) {
         joined.put(p, getProtocol(p.getUniqueId()));
@@ -202,7 +203,7 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
         }
 
         for (int i = 0; i < args.length; i++) {
-            message = message.replace("{" + (i+1) + "}", args[i].toString());
+            message = message.replace("{" + (i + 1) + "}", args[i].toString());
         }
 
         sender.sendMessage(prefix + ChatUtils.colorize(message));

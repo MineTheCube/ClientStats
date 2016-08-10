@@ -1,20 +1,20 @@
 package fr.onecraft.clientstats.bukkit.hooks;
 
+import org.bukkit.entity.Player;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.bukkit.entity.Player;
-
 public class ServerProvider extends AbstractProvider {
 
-	@Override
-	public String getProviderName() {
-		return "Protocol Hack Server";
-	}
+    @Override
+    public String getProviderName() {
+        return "Protocol Hack Server";
+    }
 
-	@Override
-	public int getProtocol(Player p) {
-		try {
+    @Override
+    public int getProtocol(Player p) {
+        try {
             Method getHandle = p.getClass().getMethod("getHandle");
             Object nmsPlayer = getHandle.invoke(p);
 
@@ -26,17 +26,17 @@ public class ServerProvider extends AbstractProvider {
 
             Method getVersion = networkManager.getClass().getMethod("getVersion");
             Object value = getVersion.invoke(networkManager);
-            
+
             Integer version = (Integer) value;
-            
+
             if (version != null) {
-            	return version;
+                return version;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-		
-		return 0;
-	}
+
+        return 0;
+    }
 
 }

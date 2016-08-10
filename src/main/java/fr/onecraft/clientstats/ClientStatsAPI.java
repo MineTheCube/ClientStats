@@ -14,7 +14,7 @@ public interface ClientStatsAPI {
 
     /**
      * Get how many total players joined
-     *
+     * <p>
      * If a player joins the server twice, it will return 2
      *
      * @return total players joined
@@ -30,7 +30,7 @@ public interface ClientStatsAPI {
 
     /**
      * Get how many different players joined
-     *
+     * <p>
      * If a player joins the server twice, it will return 1
      *
      * @return different players joined
@@ -39,7 +39,7 @@ public interface ClientStatsAPI {
 
     /**
      * Get map of UUID -> protocol version used on last join
-     *
+     * <p>
      * The map is view only, you can't modify it
      *
      * @return Map of UUID -> protocol version

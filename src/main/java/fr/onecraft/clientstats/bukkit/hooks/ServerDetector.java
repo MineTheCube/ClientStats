@@ -6,17 +6,17 @@ import java.lang.reflect.Method;
 
 public class ServerDetector {
 
-	public static boolean isUsable() {
-		try {
-			Class<?> networkManager = Class.forName("net.minecraft.server." + BukkitUtils.getVersion() + ".NetworkManager");
-			Method method = networkManager.getMethod("getVersion");
-			return method.getReturnType().isAssignableFrom(int.class) || method.getReturnType().isAssignableFrom(Integer.class);
-		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException e) {
-			return false;
-		}
-	}
+    public static boolean isUsable() {
+        try {
+            Class<?> networkManager = Class.forName(BukkitUtils.getNmsPrefixOf("NetworkManager"));
+            Method method = networkManager.getMethod("getVersion");
+            return method.getReturnType().isAssignableFrom(int.class) || method.getReturnType().isAssignableFrom(Integer.class);
+        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException e) {
+            return false;
+        }
+    }
 
-	public static AbstractProvider getProvider() {
-		return new ServerProvider();
-	}
+    public static AbstractProvider getProvider() {
+        return new ServerProvider();
+    }
 }

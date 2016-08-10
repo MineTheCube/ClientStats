@@ -1,5 +1,10 @@
 package fr.onecraft.clientstats;
 
+/**
+ * ClientStatsAPI holder
+ * <p>
+ * It's independent from both Bukkit and Bungeecord
+ */
 public class ClientStats {
 
     private static ClientStatsAPI api;
@@ -10,11 +15,6 @@ public class ClientStats {
 
     public static void setApi(ClientStatsAPI api) {
         ClientStats.api = api;
-    }
-
-    public static void test() {
-//        api
-//        JavaPlugin.getPlugin(null).isE
     }
 
 }

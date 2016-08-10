@@ -5,14 +5,14 @@ import protocolsupport.api.ProtocolSupportAPI;
 
 public class ProtocolSupportProvider extends AbstractProvider {
 
-	@Override
-	public String getProviderName() {
-		return "ProtocolSupport";
-	}
+    @Override
+    public String getProviderName() {
+        return "ProtocolSupport";
+    }
 
-	@Override
-	public int getProtocol(Player p) {
-		return ProtocolSupportAPI.getProtocolVersion(p).getId();
-	}
+    @Override
+    public int getProtocol(Player p) {
+        return ProtocolSupportAPI.getProtocolVersion(p).getId();
+    }
 
 }

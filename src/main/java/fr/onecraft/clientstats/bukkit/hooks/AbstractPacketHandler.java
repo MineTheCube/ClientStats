@@ -1,8 +1,8 @@
 package fr.onecraft.clientstats.bukkit.hooks;
 
 import fr.onecraft.core.event.Events;
-import fr.onecraft.core.task.Tasks;
 import fr.onecraft.core.plugin.Core;
+import fr.onecraft.core.task.Tasks;
 import fr.onecraft.core.tuple.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
