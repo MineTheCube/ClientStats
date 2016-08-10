@@ -1,0 +1,10 @@
+main: ${groupId}.${pluginPackage}.bukkit.Bukkit${artifactId}
+name: ${artifactId}
+version: ${project.version}
+author: MTC
+softdepend: [ProtocolLib,ViaVersion,ProtocolSupport]
+commands:
+  clientstats:
+    description: Access to ClientStats commands
+    usage: /clientstats
+    aliases: [cs,cstats,client]
