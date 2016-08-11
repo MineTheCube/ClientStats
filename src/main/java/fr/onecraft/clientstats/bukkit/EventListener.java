@@ -22,6 +22,7 @@ public class EventListener extends EventRegister {
             plugin.registerJoin(p, !p.hasPlayedBefore());
             playtimes.put(p, System.currentTimeMillis());
         }
+        plugin.updatePlayerCount();
     }
 
     @EventHandler

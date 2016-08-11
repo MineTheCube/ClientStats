@@ -19,22 +19,20 @@ messages:
   commands:
     help:
       title: "Commands:"
-      stats: "&b/cstats stats &f- Statistics of the day"
+      stats: "&b/cstats stats &f- Statistics since server startup"
       version: "&b/cstats version &f- Version of players who joined"
       online: "&b/cstats online &f- Version of online players"
       player: "&b/cstats player [who] &f- Version of player"
       reset: "&b/cstats reset &f- Reset tracked stats"
       reload: "&b/cstats reload &f- Reload configuration"
-    player:
-      self: "You are using Minecraft &a{1}&f."
-      other: "{1} is using &a{2}&f."
-      not-found: "Player &c{1}&f wasn't found."
     stats:
-      title: "Statistics of the day:"
+      title: "Statistics since server startup:"
       unique: "{1} unique players joined the server."
       new: "{1} new players joined it."
       total: "{1} total connections were made."
+      max: "Maximum online players: {1} (registered: {2})"
       playtime: "Average playtime: {1} minutes and {2} seconds."
+      exempted: "You are excluded since you have &eclientstats.exempt&f permission."
     version:
       title: "Version of players who joined:"
       list: "&f- &a{1}&f players use version {2} (&b{3}%&f)"
@@ -43,6 +41,10 @@ messages:
       title: "Version of online players:"
       list: "&f- &a{1}&f players use version {2} (&b{3}%&f)"
       empty: "Nobody is online !"
+    player:
+      self: "You are using Minecraft &a{1}&f."
+      other: "{1} is using &a{2}&f."
+      not-found: "Player &c{1}&f wasn't found."
     reset: "All stats have been reset !"
     reload: "Configuration reloaded !"
   error:

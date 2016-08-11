@@ -8,7 +8,7 @@ public interface ClientStatsAPI {
     /**
      * Whether API is enabled or not
      *
-     * @return true if you can use API
+     * @return True if you can use API
      */
     boolean isEnabled();
 
@@ -17,14 +17,14 @@ public interface ClientStatsAPI {
      * <p>
      * If a player joins the server twice, it will return 2
      *
-     * @return total players joined
+     * @return Total players joined
      */
     int getTotalJoined();
 
     /**
      * Get how many new players joined
      *
-     * @return total new players
+     * @return Total new players
      */
     int getTotalNewPlayers();
 
@@ -33,9 +33,25 @@ public interface ClientStatsAPI {
      * <p>
      * If a player joins the server twice, it will return 1
      *
-     * @return different players joined
+     * @return Different players joined
      */
     int getUniqueJoined();
+
+    /**
+     * Get the maximum of online players
+     *
+     * @return Maximum player count
+     */
+    int getMaxOnlinePlayers();
+
+    /**
+     * Get date when maximum of online players was reached
+     *
+     * Number returned is the amount of milliseconds since midnight, January 1, 1970 UTC
+     *
+     * @return Timestamp of maximum player count
+     */
+    long getMaxOnlineDate();
 
     /**
      * Get map of UUID -> protocol version used on last join

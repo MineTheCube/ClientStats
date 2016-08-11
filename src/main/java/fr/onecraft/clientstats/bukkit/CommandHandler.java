@@ -1,5 +1,6 @@
 package fr.onecraft.clientstats.bukkit;
 
+import fr.onecraft.clientstats.ClientStats;
 import fr.onecraft.core.command.CommandRegister;
 import fr.onecraft.core.command.CommandUser;
 import fr.onecraft.core.plugin.Core;
@@ -9,10 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.text.DateFormat;
+import java.util.*;
 
 
 public class CommandHandler extends CommandRegister {
@@ -39,10 +38,20 @@ public class CommandHandler extends CommandRegister {
                 plugin.subMessage(sender, "commands.stats.unique", plugin.getUniqueJoined());
                 plugin.subMessage(sender, "commands.stats.new", plugin.getTotalNewPlayers());
                 plugin.subMessage(sender, "commands.stats.total", plugin.getTotalJoined());
+
+                String date = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault())
+                        .format(new Date(plugin.getMaxOnlineDate()));
+                plugin.subMessage(sender, "commands.stats.max", plugin.getMaxOnlinePlayers(), date);
+
                 long averagePlaytime = Math.round(plugin.getAveragePlaytime());
                 long min = averagePlaytime / 60;
                 long sec = averagePlaytime % 60;
                 plugin.subMessage(sender, "commands.stats.playtime", min, sec);
+
+                if (sender.isPlayer() && sender.hasPermission(ClientStats.EXEMPT_PERMISSION)) {
+                    plugin.subMessage(sender, "commands.stats.exempted", min, sec);
+                }
+
                 return;
 
             } else if (args.get(0).equalsIgnoreCase("version")) {

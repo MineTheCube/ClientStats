@@ -25,6 +25,8 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
     private final PlayerMap<Integer> joined = new PlayerMap<>();
     private int totalJoined = 0;
     private int totalNewPlayers = 0;
+    private int maxOnlinePlayers = 0;
+    private long maxOnlineDate = 0;
     private double averagePlaytime = 0;
     private int playtimeRatio = 0;
 
@@ -55,6 +57,10 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
 
         // Handle command
         new CommandHandler().register("clientstats");
+
+        // In case of reload
+        maxOnlinePlayers = Players.online().size();
+        maxOnlineDate = System.currentTimeMillis();
 
         // Api is ready
         ClientStats.setApi(this);
@@ -108,6 +114,8 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
         joined.clear();
         totalJoined = 0;
         totalNewPlayers = 0;
+        maxOnlinePlayers = Players.online().size();
+        maxOnlineDate = System.currentTimeMillis();
         averagePlaytime = 0;
         playtimeRatio = 0;
     }
@@ -125,6 +133,16 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
     @Override
     public int getUniqueJoined() {
         return joined.size();
+    }
+
+    @Override
+    public int getMaxOnlinePlayers() {
+        return maxOnlinePlayers;
+    }
+
+    @Override
+    public long getMaxOnlineDate() {
+        return maxOnlineDate;
     }
 
     @Override
@@ -166,6 +184,14 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
         if (version == 0) return null;
         String versionName = getVersionName(version);
         return Pair.of(version, versionName);
+    }
+
+    public void updatePlayerCount() {
+        int online = Players.online().size();
+        if (online > maxOnlinePlayers) {
+            maxOnlinePlayers = online;
+            maxOnlineDate = System.currentTimeMillis();
+        }
     }
 
     public void registerJoin(Player p, boolean isNew) {
