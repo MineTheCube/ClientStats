@@ -49,7 +49,7 @@ public class CommandHandler extends CommandRegister {
                 plugin.subMessage(sender, "commands.stats.playtime", min, sec);
 
                 if (sender.isPlayer() && sender.hasPermission(ClientStats.EXEMPT_PERMISSION)) {
-                    plugin.subMessage(sender, "commands.stats.exempted", min, sec);
+                    plugin.subMessage(sender, "commands.stats.exempted");
                 }
 
                 return;
