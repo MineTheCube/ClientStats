@@ -164,6 +164,12 @@
             <scope>system</scope>
             <systemPath>${libs}/ProtocolSupport/latest/ProtocolSupport.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

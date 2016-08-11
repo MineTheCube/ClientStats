@@ -84,16 +84,6 @@ public class CommandHandler extends CommandRegister {
                     }
                 }
 
-                // For testing purpose
-                // TODO: Use unit testing
-//    			versions = new TreeMap<>();
-//    			versions.put(47, Pair.of(plugin.getVersionName(47), 210)); // 1.8
-//    			versions.put(107, Pair.of(plugin.getVersionName(107), 79)); // 1.9
-//    			versions.put(108, Pair.of(plugin.getVersionName(108), 14)); // 1.9.1
-//    			versions.put(109, Pair.of(plugin.getVersionName(109), 56)); // 1.9.2
-//    			versions.put(110, Pair.of(plugin.getVersionName(110), 478)); // 1.9.4
-//    			int total = 210 + 79 + 14 + 56 + 478;
-
                 plugin.sendMessage(sender, "commands.version.title");
 
                 if (total == 0) {
