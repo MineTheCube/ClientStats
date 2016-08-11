@@ -27,12 +27,12 @@ messages:
   commands:
     help:
       title: "Commands:"
-      stats: "&b/cstats stats &f- Statistics since server startup"
-      version: "&b/cstats version &f- Version of players who joined"
-      online: "&b/cstats online &f- Version of online players"
-      player: "&b/cstats player [who] &f- Version of player"
-      reset: "&b/cstats reset &f- Reset tracked stats"
-      reload: "&b/cstats reload &f- Reload configuration"
+      stats: "&b/{1} stats &f- Statistics since server startup"
+      version: "&b/{1} version &f- Version of players who joined"
+      online: "&b/{1} online &f- Version of online players"
+      player: "&b/{1} player [who] &f- Version of player"
+      reset: "&b/{1} reset &f- Reset tracked stats"
+      reload: "&b/{1} reload &f- Reload configuration"
     stats:
       title: "Statistics since server startup:"
       unique: "&b{1}&f unique players joined the server."

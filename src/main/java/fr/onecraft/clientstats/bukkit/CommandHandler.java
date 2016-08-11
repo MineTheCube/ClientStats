@@ -17,7 +17,6 @@ import java.util.*;
 
 public class CommandHandler extends CommandRegister {
 
-//    private final BukkitClientStats plugin = Core.instance();
     private final ClientStatsAPI plugin = Core.instance();
 
     private boolean denied(CommandUser sender, String cmd) {
@@ -202,7 +201,7 @@ public class CommandHandler extends CommandRegister {
             } else {
                 plugin.sendMessage(sender, "commands.help.title");
                 for (String message : messages) {
-                    plugin.subMessage(sender, message);
+                    plugin.subMessage(sender, message, label);
                 }
             }
         }

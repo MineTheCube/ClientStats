@@ -20,17 +20,24 @@ import java.util.UUID;
 
 public class BukkitClientStats extends Core implements ClientStatsAPI {
 
+    // Prefix
     protected String PREFIX = "§9[ClientStats] §f";
     protected String SUBLINE = "§f";
 
+    // Map of UUID -> Protocol version
     private final PlayerMap<Integer> joined = new PlayerMap<>();
+
+    // Statistics
     private int totalJoined = 0;
     private int totalNewPlayers = 0;
     private int maxOnlinePlayers = 0;
     private long maxOnlineDate = 0;
+
+    // Playtime
     private double averagePlaytime = 0;
     private int playtimeRatio = 0;
 
+    // Version detection
     private Provider provider;
 
     @Override
@@ -67,7 +74,7 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
         // Handle command
         new CommandHandler().register("clientstats");
 
-        // In case of reload
+        // Initial value
         maxOnlinePlayers = Players.online().size();
         maxOnlineDate = System.currentTimeMillis();
 
