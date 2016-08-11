@@ -9,6 +9,7 @@ import fr.onecraft.core.helper.Players;
 import fr.onecraft.core.plugin.Core;
 import fr.onecraft.core.tuple.Pair;
 import fr.onecraft.core.utils.ChatUtils;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -35,22 +36,30 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
     @Override
     public void enable() {
 
+        // Reload config
+        reload();
+
         // Version detection
         if (ViaVersionDetector.isUsable()) provider = ViaVersionDetector.getProvider();
         else if (ProtocolSupportDetector.isUsable()) provider = ProtocolSupportDetector.getProvider();
         else if (ServerDetector.isUsable()) provider = ServerDetector.getProvider();
-        else if (ProtocolLibDetector.isUsable()) provider = ProtocolLibDetector.getProvider();
-        else if (TinyProtocolDetector.isUsable()) provider = TinyProtocolDetector.getProvider();
-        else {
-            severe("---------------------");
-            severe("Your server doesn't seem to support multiple Minecraft versions.");
-            severe("---------------------");
-            setEnabled(false);
-            return;
-        }
+        else if (getConfig().getBoolean("settings.use-packets", false)) {
 
-        // Reload config
-        reload();
+            if (ProtocolLibDetector.isUsable()) provider = ProtocolLibDetector.getProvider();
+            else if (TinyProtocolDetector.isUsable()) provider = TinyProtocolDetector.getProvider();
+            else {
+                severe("---------------------");
+                severe("\"use-packets\" is enabled, but we can't find a way to use them.");
+                severe("Please install ProtocolLib to enable version detection.");
+                severe("---------------------");
+            }
+
+        } else {
+            warning("---------------------");
+            warning("Your server doesn't seem to support multiple Minecraft versions.");
+            warning("If it does, please enable \"use-packets\" in the config and restart the server.");
+            warning("---------------------");
+        }
 
         // Register Event
         new EventListener().register();
@@ -68,18 +77,23 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
     }
 
     @Override
+    public boolean isVersionDetectionEnabled() {
+        return provider != null;
+    }
+
+    @Override
     public void reload() {
 
         // Save config if it doesn't exist
         saveDefaultConfig();
 
-        // v2.7.4
+        // v2.7.3 -> v2.7.4
         Object help = getConfig().get("messages.commands.help");
         if (help instanceof List) {
             getConfig().set("messages.commands.help", null);
             ConfigurationSection cs = getConfig().getConfigurationSection("messages.commands.joined");
             if (cs != null) {
-                getConfig().set("messages.commands.stats", cs);
+                getConfig().set("messages.commands.USELESS_YOU_CAN_DELETE_THAT_PART", cs);
                 getConfig().set("messages.commands.joined", null);
             }
             saveConfig();
@@ -95,8 +109,8 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
         saveConfig();
 
         // Get prefixes
-        PREFIX = ChatUtils.colorize(config().getString("messages.prefix"));
-        SUBLINE = ChatUtils.colorize(config().getString("messages.subline"));
+        PREFIX = ChatUtils.colorize(getConfig().getString("messages.prefix"));
+        SUBLINE = ChatUtils.colorize(getConfig().getString("messages.subline"));
 
     }
 
@@ -175,7 +189,7 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
     @Override
     public int getProtocol(UUID player) {
         Player p = Players.get(player);
-        return p != null ? provider.getProtocol(p) : 0;
+        return p != null && isVersionDetectionEnabled() ? provider.getProtocol(p) : 0;
     }
 
     @Override
@@ -195,7 +209,7 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
     }
 
     public void registerJoin(Player p, boolean isNew) {
-        joined.put(p, getProtocol(p.getUniqueId()));
+        if (isVersionDetectionEnabled()) joined.put(p, getProtocol(p.getUniqueId()));
         totalJoined++;
         if (isNew) totalNewPlayers++;
     }
@@ -206,17 +220,25 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
         averagePlaytime += (playtimeSeconds - averagePlaytime) / playtimeRatio;
     }
 
-    public void sendMessage(CommandUser sender, String messageCode, Object... args) {
-        processMessage(sender, messageCode, PREFIX, args);
+    @Override
+    public void sendMessage(Object receiver, String messageCode, Object... args) {
+        processMessage(receiver, messageCode, PREFIX, args);
     }
 
-    public void subMessage(CommandUser sender, String messageCode, Object... args) {
-        processMessage(sender, messageCode, SUBLINE, args);
+    @Override
+    public void subMessage(Object receiver, String messageCode, Object... args) {
+        processMessage(receiver, messageCode, SUBLINE, args);
     }
 
-    private void processMessage(CommandUser sender, String messageCode, String prefix, Object... args) {
+    private void processMessage(Object receiver, String messageCode, String prefix, Object... args) {
 
-        String message = config().getString("messages." + messageCode);
+        CommandSender sender;
+
+        if (receiver instanceof CommandUser) sender = ((CommandUser) receiver).getCommandSender();
+        else if (receiver instanceof CommandSender) sender = (CommandSender) receiver;
+        else return;
+
+        String message = getConfig().getString("messages." + messageCode);
 
         if (message == null) {
             warning("Missing message: " + messageCode);
@@ -226,6 +248,8 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
                 message = "&cAn internal error occurred..";
             }
         }
+
+        if (message.isEmpty()) return;
 
         for (int i = 0; i < args.length; i++) {
             message = message.replace("{" + (i + 1) + "}", args[i].toString());

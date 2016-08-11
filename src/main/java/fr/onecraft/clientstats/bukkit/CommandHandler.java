@@ -1,6 +1,7 @@
 package fr.onecraft.clientstats.bukkit;
 
 import fr.onecraft.clientstats.ClientStats;
+import fr.onecraft.clientstats.ClientStatsAPI;
 import fr.onecraft.core.command.CommandRegister;
 import fr.onecraft.core.command.CommandUser;
 import fr.onecraft.core.plugin.Core;
@@ -16,7 +17,8 @@ import java.util.*;
 
 public class CommandHandler extends CommandRegister {
 
-    private final BukkitClientStats plugin = Core.instance();
+//    private final BukkitClientStats plugin = Core.instance();
+    private final ClientStatsAPI plugin = Core.instance();
 
     private boolean denied(CommandUser sender, String cmd) {
         if (sender.hasPermission("clientstats.admin") || sender.hasPermission("clientstats.cmd." + cmd)) {
@@ -25,6 +27,14 @@ public class CommandHandler extends CommandRegister {
             plugin.sendMessage(sender, "error.permission");
             return true;
         }
+    }
+
+    private boolean versionDetectionDisabled(CommandUser sender) {
+        if (!plugin.isVersionDetectionEnabled()) {
+            plugin.sendMessage(sender, "error.version-disabled");
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -55,7 +65,7 @@ public class CommandHandler extends CommandRegister {
                 return;
 
             } else if (args.get(0).equalsIgnoreCase("version")) {
-                if (denied(sender, "version")) return;
+                if (denied(sender, "version") || versionDetectionDisabled(sender)) return;
 
                 Map<Integer, Pair<String, Integer>> versions = new TreeMap<>();
                 int total = 0;
@@ -97,7 +107,7 @@ public class CommandHandler extends CommandRegister {
                 return;
 
             } else if (args.get(0).equalsIgnoreCase("online")) {
-                if (denied(sender, "online")) return;
+                if (denied(sender, "online") || versionDetectionDisabled(sender)) return;
 
                 Map<Integer, Pair<String, Integer>> versions = new TreeMap<>();
                 int total = 0;
@@ -130,18 +140,18 @@ public class CommandHandler extends CommandRegister {
                 return;
 
             } else if (args.get(0).equalsIgnoreCase("player")) {
-                if (denied(sender, "player")) return;
+                if (denied(sender, "player") || versionDetectionDisabled(sender)) return;
 
                 if (!sender.isPlayer()) {
                     plugin.sendMessage(sender, "error.not-a-player");
                     return;
                 }
 
-                Pair<Integer, String> version = plugin.getVersion(sender.getPlayer().getUniqueId());
+                Map.Entry<Integer, String> version = plugin.getVersion(sender.getPlayer().getUniqueId());
                 if (version == null) {
                     plugin.sendMessage(sender, "error.general");
                 } else {
-                    plugin.sendMessage(sender, "commands.player.self", version.getRight());
+                    plugin.sendMessage(sender, "commands.player.self", version.getValue());
                 }
 
                 return;
@@ -166,17 +176,17 @@ public class CommandHandler extends CommandRegister {
         } else if (args.size() == 2) {
 
             if (args.get(0).equalsIgnoreCase("player")) {
-                if (denied(sender, "player")) return;
+                if (denied(sender, "player") || versionDetectionDisabled(sender)) return;
 
                 Player player = Bukkit.getPlayer(args.get(1));
                 if (player == null) {
                     plugin.sendMessage(sender, "commands.player.not-found", args.get(1));
                 } else {
-                    Pair<Integer, String> version = plugin.getVersion(player.getUniqueId());
+                    Map.Entry<Integer, String> version = plugin.getVersion(player.getUniqueId());
                     if (version == null) {
                         plugin.sendMessage(sender, "error.general");
                     } else {
-                        plugin.sendMessage(sender, "commands.player.other", player.getName(), version.getRight());
+                        plugin.sendMessage(sender, "commands.player.other", player.getName(), version.getValue());
                     }
                 }
 

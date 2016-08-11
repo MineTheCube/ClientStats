@@ -13,6 +13,20 @@ public interface ClientStatsAPI {
     boolean isEnabled();
 
     /**
+     * Whether version detection is enabled or not
+     * <p>
+     * Version detection is needed for these method to work:
+     * <ul>
+     *     <li>{@link #getProtocolJoined}</li>
+     *     <li>{@link #getProtocol(UUID)}</li>
+     *     <li>{@link #getVersion(UUID)}</li>
+     * </ul>
+     *
+     * @return True if you can use version methods
+     */
+    boolean isVersionDetectionEnabled();
+
+    /**
      * Get how many total players joined
      * <p>
      * If a player joins the server twice, it will return 2
@@ -46,7 +60,7 @@ public interface ClientStatsAPI {
 
     /**
      * Get date when maximum of online players was reached
-     *
+     * <p>
      * Number returned is the amount of milliseconds since midnight, January 1, 1970 UTC
      *
      * @return Timestamp of maximum player count
@@ -102,5 +116,23 @@ public interface ClientStatsAPI {
      * Reload plugin's configuration
      */
     void reload();
+
+    /**
+     * Send a message to receiver with main prefix
+     *
+     * @param receiver Usually a CommandSender object
+     * @param messageCode Config path of message
+     * @param args Arguments that replace {1}, {2}, etc
+     */
+    void sendMessage(Object receiver, String messageCode, Object... args);
+
+    /**
+     * Send a message to receiver with short prefix
+     *
+     * @param receiver Usually a CommandSender object
+     * @param messageCode Config path of message
+     * @param args Arguments that replace {1}, {2}, etc
+     */
+    void subMessage(Object receiver, String messageCode, Object... args);
 
 }

@@ -5,14 +5,22 @@
 #  
 # -------------------------------------------------- #
 #  
+#  settings:
+#    use-packets: if your server accept multiple
+#        versions of Minecraft, without ViaVersion
+#        or ProtocolSupport, set it to true
+#  
 #  messages:
 #    contains all messages, use "&" for colors
+#    to disable a message, set it to ""
 #  
 #  versions:
 #    contains version name and their protocol
 #  
 # -------------------------------------------------- #
 #  
+settings:
+  use-packets: false
 messages:
   prefix: "&9[ClientStats] &f"
   subline: "&f"
@@ -27,11 +35,11 @@ messages:
       reload: "&b/cstats reload &f- Reload configuration"
     stats:
       title: "Statistics since server startup:"
-      unique: "{1} unique players joined the server."
-      new: "{1} new players joined it."
-      total: "{1} total connections were made."
-      max: "Maximum online players: {1} (registered: {2})"
-      playtime: "Average playtime: {1} minutes and {2} seconds."
+      unique: "&b{1}&f unique players joined the server."
+      new: "&b{1}&f new players joined it."
+      total: "&b{1}&f total connections were made."
+      max: "Maximum online players: &b{1}&f (registered: {2})"
+      playtime: "Average playtime: &b{1}&f minutes and {2} seconds."
       exempted: "You are excluded since you have &eclientstats.exempt&f permission."
     version:
       title: "Version of players who joined:"
@@ -48,6 +56,7 @@ messages:
     reset: "All stats have been reset !"
     reload: "Configuration reloaded !"
   error:
+    version-disabled: "Sorry, version detection is §cdisabled§f. Please check server logs for more information."
     permission: "You don't have the permission."
     not-a-player: "You aren't a player."
     general: "An error occured.."

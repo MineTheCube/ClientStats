@@ -7,6 +7,7 @@ public class TinyProtocolDetector {
     public static boolean isUsable() {
 
         try {
+            // Netty update
             Class.forName("io.netty.channel.ChannelInitializer");
         } catch (ClassNotFoundException e) {
             return false;
