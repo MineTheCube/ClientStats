@@ -30,7 +30,7 @@ public class CommandHandler extends CommandRegister {
 
     private boolean versionDetectionDisabled(CommandUser sender) {
         if (!plugin.isVersionDetectionEnabled()) {
-            plugin.sendMessage(sender, "error.version-disabled");
+            plugin.sendMessage(sender, "warning.version-disabled");
             return true;
         }
         return false;
@@ -57,8 +57,9 @@ public class CommandHandler extends CommandRegister {
                 long sec = averagePlaytime % 60;
                 plugin.subMessage(sender, "commands.stats.playtime", min, sec);
 
-                if (sender.isPlayer() && sender.hasPermission(ClientStats.EXEMPT_PERMISSION)) {
-                    plugin.subMessage(sender, "commands.stats.exempted");
+                // Warn user if stats are low and he has exempt permission
+                if (plugin.getUniqueJoined() < 10 && sender.isPlayer() && sender.hasPermission(ClientStats.EXEMPT_PERMISSION)) {
+                    plugin.subMessage(sender, "warning.exempted");
                 }
 
                 return;
@@ -91,6 +92,11 @@ public class CommandHandler extends CommandRegister {
                     for (Pair<String, Integer> entry : versions.values()) {
                         plugin.subMessage(sender, "commands.version.list", entry.getValue(), entry.getKey(), Math.round(entry.getValue() * 100F / total));
                     }
+                }
+
+                // Warn user if stats are low and he has exempt permission
+                if (total < 10 && sender.isPlayer() && sender.hasPermission(ClientStats.EXEMPT_PERMISSION)) {
+                    plugin.subMessage(sender, "warning.exempted");
                 }
 
                 return;

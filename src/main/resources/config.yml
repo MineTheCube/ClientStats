@@ -40,23 +40,24 @@ messages:
       total: "&b{1}&f total connections were made."
       max: "Maximum online players: &b{1}&f (registered: {2})"
       playtime: "Average playtime: &b{1}&f minutes and {2} seconds."
-      exempted: "You are excluded since you have &eclientstats.exempt&f permission."
     version:
       title: "Version of players who joined:"
       list: "&f- &a{1}&f players use version {2} (&b{3}%&f)"
-      empty: "Nobody joined the server !"
+      empty: "Nobody joined the server yet."
     online:
       title: "Version of online players:"
       list: "&f- &a{1}&f players use version {2} (&b{3}%&f)"
-      empty: "Nobody is online !"
+      empty: "Nobody is currently online."
     player:
       self: "You are using Minecraft &a{1}&f."
       other: "{1} is using &a{2}&f."
       not-found: "Player &c{1}&f wasn't found."
     reset: "All stats have been reset !"
     reload: "Configuration reloaded !"
-  error:
+  warning:
     version-disabled: "Sorry, version detection is §cdisabled§f. Please check server logs for more information."
+    exempted: "You are excluded since you have &eclientstats.exempt&f permission."
+  error:
     permission: "You don't have the permission."
     not-a-player: "You aren't a player."
     general: "An error occured.."
