@@ -63,6 +63,7 @@ messages:
     general: "An error occured.."
 versions:
   "0": "Unknown"
+  "302": "16w32b"
   "301": "16w32a"
   "210": "1.10 - 1.10.2"
   "205": "1.10-pre2"
