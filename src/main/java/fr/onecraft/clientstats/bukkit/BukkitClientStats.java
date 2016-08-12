@@ -85,7 +85,7 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
 
     @Override
     public boolean isVersionDetectionEnabled() {
-        return provider != null;
+        return provider != null && isEnabled();
     }
 
     @Override
