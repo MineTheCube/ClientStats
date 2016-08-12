@@ -1,0 +1,4 @@
+main: ${groupId}.${pluginPackage}.bungee.Bungee${artifactId}
+name: ${artifactId}
+version: ${project.version}
+author: MTC
