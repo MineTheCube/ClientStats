@@ -112,6 +112,11 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <!-- Bungeecord -->
+        <repository>
+            <id>bungeecord-repo</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
         <!-- ProtocolLib / TinyProtocol -->
         <repository>
             <id>dmulloy2-repo</id>
