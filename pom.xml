@@ -143,13 +143,7 @@
             <version>1.10-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <!-- Spigot for TinyProtocol -->
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>${spigotVersion}</version>
-            <scope>provided</scope>
-        </dependency>
+        <!-- TinyProtocol -->
         <dependency>
             <groupId>com.comphenix.tinyprotocol</groupId>
             <artifactId>TinyProtocol</artifactId>
