@@ -84,6 +84,15 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
     }
 
     @Override
+    public void start() {}
+
+    @Override
+    public void disable() {
+        // Remove api
+        ClientStats.setApi(null);
+    }
+
+    @Override
     public boolean isVersionDetectionEnabled() {
         return provider != null && isEnabled();
     }
@@ -116,18 +125,9 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
         saveConfig();
 
         // Get prefixes
-        PREFIX = ChatUtils.colorize(getConfig().getString("messages.prefix"));
-        SUBLINE = ChatUtils.colorize(getConfig().getString("messages.subline"));
+        PREFIX = ChatUtils.colorize(getConfig().getString("messages.prefix", PREFIX));
+        SUBLINE = ChatUtils.colorize(getConfig().getString("messages.subline", SUBLINE));
 
-    }
-
-    @Override
-    public void start() {}
-
-    @Override
-    public void disable() {
-        // Remove api
-        ClientStats.setApi(null);
     }
 
     @Override
@@ -178,11 +178,11 @@ public class BukkitClientStats extends Core implements ClientStatsAPI {
 
     @Override
     public String getVersionName(int version) {
-        String versionName = config().getString("versions." + version);
+        String versionName = getConfig().getString("versions." + version);
 
         if (versionName == null) {
             getLogger().severe("Missing version: versions." + version);
-            versionName = config().getString("versions.0");
+            versionName = getConfig().getString("versions.0");
 
             if (versionName == null) {
                 getLogger().severe("Missing message: versions.0");
