@@ -17,7 +17,7 @@ public class CommandHandler extends Command {
     private final ClientStatsAPI plugin;
 
     public CommandHandler(ClientStatsAPI plugin) {
-        super("clientstats", null, "cstats", "cs");
+        super("clientstats", null, "cstats", "cs", "bclientstats", "bcstats", "bcs");
         this.plugin = plugin;
     }
 

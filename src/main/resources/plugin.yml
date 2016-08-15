@@ -7,4 +7,4 @@ commands:
   clientstats:
     description: Access to ClientStats commands
     usage: /clientstats
-    aliases: [cs,cstats,client]
+    aliases: [cstats,cs,sclientstats,scstats,scs]
