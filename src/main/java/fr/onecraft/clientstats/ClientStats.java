@@ -7,8 +7,6 @@ package fr.onecraft.clientstats;
  */
 public class ClientStats {
 
-    public static final String EXEMPT_PERMISSION = "clientstats.exempt";
-
     private static ClientStatsAPI api;
 
     public static ClientStatsAPI getApi() {

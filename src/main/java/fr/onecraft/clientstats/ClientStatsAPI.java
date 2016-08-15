@@ -6,6 +6,21 @@ import java.util.UUID;
 public interface ClientStatsAPI {
 
     /**
+     * Permission to use every commands
+     */
+    String PERMISSION_ADMIN = "clientstats.admin";
+
+    /**
+     * Permission to use a specific command
+     */
+    String PERMISSION_COMMAND = "clientstats.cmd.{cmd}";
+
+    /**
+     * Permission to be excluded from statistics
+     */
+    String EXEMPT_PERMISSION = "clientstats.exempt";
+
+    /**
      * Whether API is enabled or not
      *
      * @return True if you can use API

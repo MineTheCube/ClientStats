@@ -1,6 +1,6 @@
 package fr.onecraft.clientstats.bungee;
 
-import fr.onecraft.clientstats.ClientStats;
+import fr.onecraft.clientstats.ClientStatsAPI;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
@@ -23,7 +23,7 @@ public class EventListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PostLoginEvent e) {
         ProxiedPlayer p = e.getPlayer();
-        if (!p.hasPermission(ClientStats.EXEMPT_PERMISSION)) {
+        if (!p.hasPermission(ClientStatsAPI.EXEMPT_PERMISSION)) {
             plugin.registerJoin(p);
             playtimes.put(p.getUniqueId(), System.currentTimeMillis());
         }

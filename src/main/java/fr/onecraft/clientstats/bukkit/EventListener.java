@@ -1,6 +1,6 @@
 package fr.onecraft.clientstats.bukkit;
 
-import fr.onecraft.clientstats.ClientStats;
+import fr.onecraft.clientstats.ClientStatsAPI;
 import fr.onecraft.core.collection.PlayerMap;
 import fr.onecraft.core.event.EventRegister;
 import fr.onecraft.core.plugin.Core;
@@ -18,7 +18,7 @@ public class EventListener extends EventRegister {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        if (!p.hasPermission(ClientStats.EXEMPT_PERMISSION)) {
+        if (!p.hasPermission(ClientStatsAPI.EXEMPT_PERMISSION)) {
             plugin.registerJoin(p, !p.hasPlayedBefore());
             playtimes.put(p, System.currentTimeMillis());
         }

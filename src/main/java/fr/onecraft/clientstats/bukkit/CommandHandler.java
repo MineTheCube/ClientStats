@@ -1,6 +1,5 @@
 package fr.onecraft.clientstats.bukkit;
 
-import fr.onecraft.clientstats.ClientStats;
 import fr.onecraft.clientstats.ClientStatsAPI;
 import fr.onecraft.core.command.CommandRegister;
 import fr.onecraft.core.command.CommandUser;
@@ -20,7 +19,8 @@ public class CommandHandler extends CommandRegister {
     private final ClientStatsAPI plugin = Core.instance();
 
     private boolean denied(CommandUser sender, String cmd) {
-        if (sender.hasPermission("clientstats.admin") || sender.hasPermission("clientstats.cmd." + cmd)) {
+        if (sender.hasPermission(ClientStatsAPI.PERMISSION_ADMIN)
+                || sender.hasPermission(ClientStatsAPI.PERMISSION_COMMAND.replace("{cmd}", cmd))) {
             return false;
         } else {
             plugin.sendMessage(sender, "error.permission");
@@ -58,7 +58,7 @@ public class CommandHandler extends CommandRegister {
                 plugin.subMessage(sender, "commands.stats.playtime", min, sec);
 
                 // Warn user if stats are low and he has exempt permission
-                if (plugin.getUniqueJoined() < 10 && sender.isPlayer() && sender.hasPermission(ClientStats.EXEMPT_PERMISSION)) {
+                if (plugin.getUniqueJoined() < 10 && sender.isPlayer() && sender.hasPermission(ClientStatsAPI.EXEMPT_PERMISSION)) {
                     plugin.subMessage(sender, "warning.exempted");
                 }
 
@@ -95,7 +95,7 @@ public class CommandHandler extends CommandRegister {
                 }
 
                 // Warn user if stats are low and he has exempt permission
-                if (total < 10 && sender.isPlayer() && sender.hasPermission(ClientStats.EXEMPT_PERMISSION)) {
+                if (total < 10 && sender.isPlayer() && sender.hasPermission(ClientStatsAPI.EXEMPT_PERMISSION)) {
                     plugin.subMessage(sender, "warning.exempted");
                 }
 
@@ -193,11 +193,11 @@ public class CommandHandler extends CommandRegister {
         if (!denied(sender, "help")) {
 
             String[] subCommands = {"stats", "version", "online", "player", "reset", "reload"};
-            boolean isAdmin = sender.hasPermission("clientstats.admin");
+            boolean isAdmin = sender.hasPermission(ClientStatsAPI.PERMISSION_ADMIN);
             List<String> messages = new ArrayList<>();
 
             for (String subCommand : subCommands) {
-                if (isAdmin || sender.hasPermission("clientstats.cmd." + subCommand)) {
+                if (isAdmin || sender.hasPermission(ClientStatsAPI.PERMISSION_COMMAND.replace("{cmd}", subCommand))) {
                     messages.add("commands.help." + subCommand);
                 }
             }
