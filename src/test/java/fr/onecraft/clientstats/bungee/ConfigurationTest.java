@@ -98,7 +98,7 @@ public class ConfigurationTest {
         println("--------------- HEADER ---------------");
 
         InputStream stream = new ByteArrayInputStream(PLUGIN_CONFIG.getBytes(StandardCharsets.UTF_8));
-        println("Copy header: " + test.copyHeader(test.parseHeader(stream), file));
+        println("Copy header: " + test.copyHeader(test.parseHeader(stream), new FileWriter(file)));
 
         // Save to file
         println();
@@ -122,8 +122,8 @@ public class ConfigurationTest {
     private static class PluginConfigurableTest extends PluginConfigurable {
 
         @Override
-        public boolean copyHeader(List<String> header, File toConfig) {
-            return super.copyHeader(header, toConfig);
+        public boolean copyHeader(List<String> header, Writer dest) {
+            return super.copyHeader(header, dest);
         }
 
         @Override
