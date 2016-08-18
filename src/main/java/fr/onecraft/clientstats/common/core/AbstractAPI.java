@@ -1,19 +1,20 @@
-package fr.onecraft.clientstats.bungee;
+package fr.onecraft.clientstats.common.core;
 
-import fr.onecraft.clientstats.ClientStats;
 import fr.onecraft.clientstats.ClientStatsAPI;
+import fr.onecraft.clientstats.common.base.Configurable;
+import fr.onecraft.clientstats.common.base.VersionProvider;
+import fr.onecraft.clientstats.common.user.MixedUser;
 import fr.onecraft.core.tuple.Pair;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
 
-public class BungeeClientStats extends BungeePlugin implements ClientStatsAPI {
+import static fr.onecraft.clientstats.common.user.MixedUser.getOnlineCount;
+
+public abstract class AbstractAPI implements ClientStatsAPI {
 
     // Prefix
     protected String PREFIX = "§9[ClientStats] §f";
@@ -22,75 +23,49 @@ public class BungeeClientStats extends BungeePlugin implements ClientStatsAPI {
     // Map of UUID -> Protocol version
     private final Map<UUID, Integer> joined = new HashMap<>();
 
+    // Version provider
+    private final VersionProvider provider;
+    private final Configurable config;
+
     // Statistics
     private int totalJoined = 0;
-    private int maxOnlinePlayers = 0;
-    private long maxOnlineDate = 0;
+    private int maxOnlinePlayers = getOnlineCount();
+    private long maxOnlineDate = System.currentTimeMillis();
 
     // Playtime
     private double averagePlaytime = 0;
     private int playtimeRatio = 0;
 
-    // Plugin data
-    private boolean enabled = false;
-
-    @Override
-    public void onEnable() {
-
-        // Reload config
-        reload();
-
-        // Register Event
-        getProxy().getPluginManager().registerListener(this, new EventListener(this));
-
-        // Handle command
-        getProxy().getPluginManager().registerCommand(this, new CommandHandler(this));
-
-        // Initial value
-        maxOnlinePlayers = getProxy().getOnlineCount();
-        maxOnlineDate = System.currentTimeMillis();
-
-        // Api is ready
-        enabled = true;
-        ClientStats.setApi(this);
-
+    public AbstractAPI(VersionProvider provider, Configurable config) {
+        this.provider = provider;
+        this.config = config;
     }
 
-    @Override
-    public void onDisable() {
-        // Remove api
-        ClientStats.setApi(null);
-        enabled = false;
-    }
+    public abstract Logger getLogger();
 
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    @Override
-    public boolean isVersionDetectionEnabled() {
-        return isEnabled();
-    }
+    public abstract String colorize(String msg);
 
     @Override
     public void reload() {
 
         // Save config if it doesn't exist
-        saveDefaultConfig();
+        config.saveDefaultConfig();
 
         // Reload to get latest values
-        reloadConfig();
+        config.reloadConfig();
+
+        // Migrate over versions
+        config.migrate();
 
         // Copy headers and new values
-        // Actually there isn't any easy way to achieve this with Bungeecord API...
+        config.options();
 
         // And save it
-        saveConfig();
+        config.saveConfig();
 
         // Get prefixes
-        PREFIX = colorize(getConfig().getString("messages.prefix", PREFIX));
-        SUBLINE = colorize(getConfig().getString("messages.subline", SUBLINE));
+        PREFIX = colorize(config.getConfigString("messages.prefix", PREFIX));
+        SUBLINE = colorize(config.getConfigString("messages.subline", SUBLINE));
 
     }
 
@@ -98,10 +73,15 @@ public class BungeeClientStats extends BungeePlugin implements ClientStatsAPI {
     public void resetStats() {
         joined.clear();
         totalJoined = 0;
-        maxOnlinePlayers = getProxy().getOnlineCount();
+        maxOnlinePlayers = MixedUser.getOnlineCount();
         maxOnlineDate = System.currentTimeMillis();
         averagePlaytime = 0;
         playtimeRatio = 0;
+    }
+
+    @Override
+    public boolean isVersionDetectionEnabled() {
+        return isEnabled() && provider != null;
     }
 
     @Override
@@ -141,11 +121,11 @@ public class BungeeClientStats extends BungeePlugin implements ClientStatsAPI {
 
     @Override
     public String getVersionName(int version) {
-        String versionName = getConfig().getString("versions." + version);
+        String versionName = config.getConfigString("versions." + version);
 
         if (versionName == null) {
             getLogger().severe("Missing version: versions." + version);
-            versionName = getConfig().getString("versions.0");
+            versionName = config.getConfigString("versions.0");
 
             if (versionName == null) {
                 getLogger().severe("Missing message: versions.0");
@@ -158,13 +138,7 @@ public class BungeeClientStats extends BungeePlugin implements ClientStatsAPI {
 
     @Override
     public int getProtocol(UUID player) {
-        if (isVersionDetectionEnabled()) {
-            ProxiedPlayer p = getProxy().getPlayer(player);
-            if (p != null) {
-                return p.getPendingConnection().getVersion();
-            }
-        }
-        return 0;
+        return isVersionDetectionEnabled() ? provider.getProtocol(player) : 0;
     }
 
     @Override
@@ -176,14 +150,14 @@ public class BungeeClientStats extends BungeePlugin implements ClientStatsAPI {
     }
 
     public void updatePlayerCount() {
-        int online = getProxy().getOnlineCount();
+        int online = MixedUser.getOnlineCount();
         if (online > maxOnlinePlayers) {
             maxOnlinePlayers = online;
             maxOnlineDate = System.currentTimeMillis();
         }
     }
 
-    public void registerJoin(ProxiedPlayer p) {
+    public void registerJoin(MixedUser p, boolean isNew) {
         if (isVersionDetectionEnabled()) joined.put(p.getUniqueId(), getProtocol(p.getUniqueId()));
         totalJoined++;
     }
@@ -195,27 +169,22 @@ public class BungeeClientStats extends BungeePlugin implements ClientStatsAPI {
     }
 
     @Override
-    public void sendMessage(Object receiver, String messageCode, Object... args) {
+    public void sendMessage(MixedUser receiver, String messageCode, Object... args) {
         processMessage(receiver, messageCode, PREFIX, args);
     }
 
     @Override
-    public void subMessage(Object receiver, String messageCode, Object... args) {
+    public void subMessage(MixedUser receiver, String messageCode, Object... args) {
         processMessage(receiver, messageCode, SUBLINE, args);
     }
 
-    private void processMessage(Object receiver, String messageCode, String prefix, Object... args) {
+    private void processMessage(MixedUser receiver, String messageCode, String prefix, Object... args) {
 
-        CommandSender sender;
-
-        if (receiver instanceof CommandSender) sender = (CommandSender) receiver;
-        else return;
-
-        String message = getConfig().getString("messages." + messageCode);
+        String message = config.getConfigString("messages." + messageCode);
 
         if (message == null) {
             getLogger().warning("Missing message: " + messageCode);
-            message = getConfig().getString("messages.error.general");
+            message = config.getConfigString("messages.error.general");
 
             if (message == null) {
                 message = "&cAn internal error occurred..";
@@ -228,11 +197,7 @@ public class BungeeClientStats extends BungeePlugin implements ClientStatsAPI {
             message = message.replace("{" + (i + 1) + "}", args[i].toString());
         }
 
-        sender.sendMessage(TextComponent.fromLegacyText(prefix + colorize(message)));
-    }
-
-    private String colorize(String string) {
-        return ChatColor.translateAlternateColorCodes('&', string);
+        receiver.sendMessage(prefix + colorize(message));
     }
 
 }

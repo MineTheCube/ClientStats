@@ -1,5 +1,8 @@
 package fr.onecraft.clientstats;
 
+import fr.onecraft.clientstats.common.base.ServerType;
+import fr.onecraft.clientstats.common.user.MixedUser;
+
 import java.util.Map;
 import java.util.UUID;
 
@@ -133,21 +136,30 @@ public interface ClientStatsAPI {
     void reload();
 
     /**
+     * Get current server type
+     *
+     * Mainly used for internal purposes
+     *
+     * @return Server type
+     */
+    ServerType getServerType();
+
+    /**
      * Send a message to receiver with main prefix
      *
-     * @param receiver Usually a CommandSender object
+     * @param receiver Receiver of the message
      * @param messageCode Config path of message
      * @param args Arguments that replace {1}, {2}, etc
      */
-    void sendMessage(Object receiver, String messageCode, Object... args);
+    void sendMessage(MixedUser receiver, String messageCode, Object... args);
 
     /**
      * Send a message to receiver with short prefix
      *
-     * @param receiver Usually a CommandSender object
+     * @param receiver Receiver of the message
      * @param messageCode Config path of message
      * @param args Arguments that replace {1}, {2}, etc
      */
-    void subMessage(Object receiver, String messageCode, Object... args);
+    void subMessage(MixedUser receiver, String messageCode, Object... args);
 
 }

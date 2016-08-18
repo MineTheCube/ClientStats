@@ -1,60 +1,51 @@
 package fr.onecraft.clientstats.bungee;
 
-import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.config.Configuration;
-import net.md_5.bungee.config.ConfigurationProvider;
-import net.md_5.bungee.config.YamlConfiguration;
+import fr.onecraft.clientstats.ClientStats;
+import fr.onecraft.clientstats.bungee.config.PluginConfigurable;
+import fr.onecraft.clientstats.bungee.dispatcher.CommandDispatcher;
+import fr.onecraft.clientstats.bungee.dispatcher.EventDispatcher;
+import fr.onecraft.clientstats.bungee.user.BungeeUserProvider;
+import fr.onecraft.clientstats.common.core.AbstractAPI;
+import fr.onecraft.clientstats.common.user.MixedUser;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.util.logging.Level;
+public class BungeePlugin extends PluginConfigurable {
 
-public class BungeePlugin extends Plugin {
+    // Plugin state
+    private boolean enabled = false;
 
-    private final String filename = "config.yml";
-    private Configuration config = null;
+    @Override
+    public void onEnable() {
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void saveDefaultConfig() {
+        // User provider
+        MixedUser.setProvider(new BungeeUserProvider(getProxy()));
 
-        if (!getDataFolder().exists()) {
-            getDataFolder().mkdir();
-        }
+        // Bungeecord API
+        AbstractAPI api = new BungeeAPI(this);
 
-        File file = new File(getDataFolder(), filename);
+        // Reload config
+        api.reload();
 
-        if (!file.exists()) {
-            try (InputStream in = getResourceAsStream(filename)) {
-                Files.copy(in, file.toPath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        // Register Event
+        getProxy().getPluginManager().registerListener(this, new EventDispatcher(api));
+
+        // Handle command
+        getProxy().getPluginManager().registerCommand(this, new CommandDispatcher(api));
+
+        // Api is ready
+        enabled = true;
+        ClientStats.setApi(api);
+
     }
 
-    public Configuration getConfig() {
-        if (config == null) {
-            reloadConfig();
-        }
-        return config;
+    @Override
+    public void onDisable() {
+        // Remove api
+        ClientStats.setApi(null);
+        enabled = false;
     }
 
-    public void saveConfig() {
-        try {
-            ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, new File(getDataFolder(), filename));
-        } catch (IOException e) {
-            getLogger().log(Level.SEVERE, "Could not save config to " + filename, e);
-        }
-    }
-
-    public void reloadConfig() {
-        try {
-            config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(getDataFolder(), filename));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public boolean isEnabled() {
+        return enabled;
     }
 
 }

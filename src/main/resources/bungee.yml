@@ -1,4 +1,4 @@
-main: ${groupId}.${pluginPackage}.bungee.Bungee${artifactId}
+main: ${groupId}.${pluginPackage}.bungee.BungeePlugin
 name: ${artifactId}
 version: ${project.version}
 author: MTC

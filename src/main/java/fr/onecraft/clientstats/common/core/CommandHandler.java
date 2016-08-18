@@ -1,65 +1,68 @@
-package fr.onecraft.clientstats.bukkit;
+package fr.onecraft.clientstats.common.core;
 
 import fr.onecraft.clientstats.ClientStatsAPI;
-import fr.onecraft.core.command.CommandRegister;
-import fr.onecraft.core.command.CommandUser;
-import fr.onecraft.core.plugin.Core;
+import fr.onecraft.clientstats.common.base.ServerType;
+import fr.onecraft.clientstats.common.user.MixedUser;
 import fr.onecraft.core.tuple.MutablePair;
 import fr.onecraft.core.tuple.Pair;
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.entity.Player;
 
 import java.text.DateFormat;
 import java.util.*;
 
 
-public class CommandHandler extends CommandRegister {
+public class CommandHandler {
 
-    private final ClientStatsAPI plugin = Core.instance();
+    private final ClientStatsAPI api;
 
-    private boolean denied(CommandUser sender, String cmd) {
+    public CommandHandler(ClientStatsAPI api) {
+        this.api = api;
+    }
+
+    private boolean denied(MixedUser sender, String cmd) {
         if (sender.hasPermission(ClientStatsAPI.PERMISSION_ADMIN)
                 || sender.hasPermission(ClientStatsAPI.PERMISSION_COMMAND.replace("{cmd}", cmd))) {
             return false;
         } else {
-            plugin.sendMessage(sender, "error.permission");
+            api.sendMessage(sender, "error.permission");
             return true;
         }
     }
 
-    private boolean versionDetectionDisabled(CommandUser sender) {
-        if (!plugin.isVersionDetectionEnabled()) {
-            plugin.sendMessage(sender, "warning.version-disabled");
+    private boolean versionDetectionDisabled(MixedUser sender) {
+        if (!api.isVersionDetectionEnabled()) {
+            api.sendMessage(sender, "warning.version-disabled");
             return true;
         }
         return false;
     }
 
-    @Override
-    protected void execute(CommandUser sender, List<String> args, Command cmd, String label) {
+    public void execute(MixedUser sender, List<String> args, String label) {
         if (args.size() == 1) {
 
             if (args.get(0).equalsIgnoreCase("stats")) {
                 if (denied(sender, "stats")) return;
 
-                plugin.sendMessage(sender, "commands.stats.title");
-                plugin.subMessage(sender, "commands.stats.unique", plugin.getUniqueJoined());
-                plugin.subMessage(sender, "commands.stats.new", plugin.getTotalNewPlayers());
-                plugin.subMessage(sender, "commands.stats.total", plugin.getTotalJoined());
+                api.sendMessage(sender, "commands.stats.title");
+                api.subMessage(sender, "commands.stats.unique", api.getUniqueJoined());
+
+                if (api.getServerType() != ServerType.BUNGEE) {
+                    api.subMessage(sender, "commands.stats.new", api.getTotalNewPlayers());
+                }
+
+                api.subMessage(sender, "commands.stats.total", api.getTotalJoined());
 
                 String date = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault())
-                        .format(new Date(plugin.getMaxOnlineDate()));
-                plugin.subMessage(sender, "commands.stats.max", plugin.getMaxOnlinePlayers(), date);
+                        .format(new Date(api.getMaxOnlineDate()));
+                api.subMessage(sender, "commands.stats.max", api.getMaxOnlinePlayers(), date);
 
-                long averagePlaytime = Math.round(plugin.getAveragePlaytime());
+                long averagePlaytime = Math.round(api.getAveragePlaytime());
                 long min = averagePlaytime / 60;
                 long sec = averagePlaytime % 60;
-                plugin.subMessage(sender, "commands.stats.playtime", min, sec);
+                api.subMessage(sender, "commands.stats.playtime", min, sec);
 
                 // Warn user if stats are low and he has exempt permission
-                if (plugin.getUniqueJoined() < 10 && sender.isPlayer() && sender.hasPermission(ClientStatsAPI.EXEMPT_PERMISSION)) {
-                    plugin.subMessage(sender, "warning.exempted");
+                if (api.getUniqueJoined() < 10 && sender.isPlayer() && sender.hasPermission(ClientStatsAPI.EXEMPT_PERMISSION)) {
+                    api.subMessage(sender, "warning.exempted");
                 }
 
                 return;
@@ -70,11 +73,11 @@ public class CommandHandler extends CommandRegister {
                 Map<Integer, Pair<String, Integer>> versions = new TreeMap<>();
                 int total = 0;
 
-                for (Integer version : plugin.getProtocolJoined().values()) {
+                for (Integer version : api.getProtocolJoined().values()) {
                     total++;
                     Pair<String, Integer> pair = versions.get(version);
                     if (pair == null) {
-                        String versionName = plugin.getVersionName(version);
+                        String versionName = api.getVersionName(version);
                         if (versionName != null) {
                             versions.put(version, MutablePair.of(versionName, 1));
                         }
@@ -84,19 +87,19 @@ public class CommandHandler extends CommandRegister {
                     }
                 }
 
-                plugin.sendMessage(sender, "commands.version.title");
+                api.sendMessage(sender, "commands.version.title");
 
                 if (total == 0) {
-                    plugin.subMessage(sender, "commands.version.empty");
+                    api.subMessage(sender, "commands.version.empty");
                 } else {
                     for (Pair<String, Integer> entry : versions.values()) {
-                        plugin.subMessage(sender, "commands.version.list", entry.getValue(), entry.getKey(), Math.round(entry.getValue() * 100F / total));
+                        api.subMessage(sender, "commands.version.list", entry.getValue(), entry.getKey(), Math.round(entry.getValue() * 100F / total));
                     }
                 }
 
                 // Warn user if stats are low and he has exempt permission
                 if (total < 10 && sender.isPlayer() && sender.hasPermission(ClientStatsAPI.EXEMPT_PERMISSION)) {
-                    plugin.subMessage(sender, "warning.exempted");
+                    api.subMessage(sender, "warning.exempted");
                 }
 
                 return;
@@ -107,12 +110,12 @@ public class CommandHandler extends CommandRegister {
                 Map<Integer, Pair<String, Integer>> versions = new TreeMap<>();
                 int total = 0;
 
-                for (Player online : Bukkit.getOnlinePlayers()) {
+                for (UUID online : MixedUser.getOnlineUsers()) {
                     total++;
-                    int version = plugin.getProtocol(online.getUniqueId());
+                    int version = api.getProtocol(online);
                     Pair<String, Integer> pair = versions.get(version);
                     if (pair == null) {
-                        String versionName = plugin.getVersionName(version);
+                        String versionName = api.getVersionName(version);
                         if (versionName != null) {
                             versions.put(version, MutablePair.of(versionName, 1));
                         }
@@ -122,13 +125,13 @@ public class CommandHandler extends CommandRegister {
                     }
                 }
 
-                plugin.sendMessage(sender, "commands.online.title");
+                api.sendMessage(sender, "commands.online.title");
 
                 if (total == 0) {
-                    plugin.subMessage(sender, "commands.online.empty");
+                    api.subMessage(sender, "commands.online.empty");
                 } else {
                     for (Pair<String, Integer> entry : versions.values()) {
-                        plugin.subMessage(sender, "commands.online.list", entry.getValue(), entry.getKey(), Math.round(entry.getValue() * 100F / total));
+                        api.subMessage(sender, "commands.online.list", entry.getValue(), entry.getKey(), Math.round(entry.getValue() * 100F / total));
                     }
                 }
 
@@ -138,15 +141,15 @@ public class CommandHandler extends CommandRegister {
                 if (denied(sender, "player") || versionDetectionDisabled(sender)) return;
 
                 if (!sender.isPlayer()) {
-                    plugin.sendMessage(sender, "error.not-a-player");
+                    api.sendMessage(sender, "error.not-a-player");
                     return;
                 }
 
-                Map.Entry<Integer, String> version = plugin.getVersion(sender.getPlayer().getUniqueId());
+                Map.Entry<Integer, String> version = api.getVersion(sender.getUniqueId());
                 if (version == null) {
-                    plugin.sendMessage(sender, "error.general");
+                    api.sendMessage(sender, "error.general");
                 } else {
-                    plugin.sendMessage(sender, "commands.player.self", version.getValue());
+                    api.sendMessage(sender, "commands.player.self", version.getValue());
                 }
 
                 return;
@@ -154,16 +157,16 @@ public class CommandHandler extends CommandRegister {
             } else if (args.get(0).equalsIgnoreCase("reset")) {
                 if (denied(sender, "reset")) return;
 
-                plugin.resetStats();
-                plugin.sendMessage(sender, "commands.reset");
+                api.resetStats();
+                api.sendMessage(sender, "commands.reset");
 
                 return;
 
             } else if (args.get(0).equalsIgnoreCase("reload")) {
                 if (denied(sender, "reload")) return;
 
-                plugin.reload();
-                plugin.sendMessage(sender, "commands.reload");
+                api.reload();
+                api.sendMessage(sender, "commands.reload");
 
                 return;
             }
@@ -173,15 +176,15 @@ public class CommandHandler extends CommandRegister {
             if (args.get(0).equalsIgnoreCase("player")) {
                 if (denied(sender, "player") || versionDetectionDisabled(sender)) return;
 
-                Player player = Bukkit.getPlayer(args.get(1));
+                MixedUser player = MixedUser.getUser(args.get(1));
                 if (player == null) {
-                    plugin.sendMessage(sender, "commands.player.not-found", args.get(1));
+                    api.sendMessage(sender, "commands.player.not-found", args.get(1));
                 } else {
-                    Map.Entry<Integer, String> version = plugin.getVersion(player.getUniqueId());
+                    Map.Entry<Integer, String> version = api.getVersion(player.getUniqueId());
                     if (version == null) {
-                        plugin.sendMessage(sender, "error.general");
+                        api.sendMessage(sender, "error.general");
                     } else {
-                        plugin.sendMessage(sender, "commands.player.other", player.getName(), version.getValue());
+                        api.sendMessage(sender, "commands.player.other", player.getName(), version.getValue());
                     }
                 }
 
@@ -203,11 +206,11 @@ public class CommandHandler extends CommandRegister {
             }
 
             if (messages.isEmpty()) {
-                plugin.sendMessage(sender, "error.permission");
+                api.sendMessage(sender, "error.permission");
             } else {
-                plugin.sendMessage(sender, "commands.help.title");
+                api.sendMessage(sender, "commands.help.title");
                 for (String message : messages) {
-                    plugin.subMessage(sender, message, label);
+                    api.subMessage(sender, message, label);
                 }
             }
         }

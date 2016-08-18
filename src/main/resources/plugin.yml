@@ -1,4 +1,4 @@
-main: ${groupId}.${pluginPackage}.bukkit.Bukkit${artifactId}
+main: ${groupId}.${pluginPackage}.bukkit.BukkitPlugin
 name: ${artifactId}
 version: ${project.version}
 author: MTC
