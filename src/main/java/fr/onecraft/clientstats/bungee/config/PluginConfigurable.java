@@ -48,13 +48,12 @@ public abstract class PluginConfigurable extends Plugin implements Configurable 
     @Override
     public void saveConfig() {
         try {
-            File configFile = new File(getDataFolder(), filename);
+            File dest = new File(getDataFolder(), filename);
             ConfigurationProvider provider = ConfigurationProvider.getProvider(YamlConfiguration.class);
-            provider.save(config, configFile);
-            if (!copyHeader(getResourceAsStream(filename), configFile)) {
-                // Failed to copy header, save config again
-                provider.save(config, configFile);
-            }
+
+            // If we copied header, we append config to it
+            boolean append = copyHeader(parseHeader(getResourceAsStream(filename)), dest);
+            provider.save(config, new FileWriter(dest, append));
 
         } catch (IOException e) {
             getLogger().log(Level.SEVERE, "Could not save config to " + filename, e);
@@ -94,7 +93,25 @@ public abstract class PluginConfigurable extends Plugin implements Configurable 
 
     protected static final String COMMENT_PREFIX = "# ";
 
-    protected boolean copyHeader(InputStream resourceConfig, File toConfig) {
+    protected boolean copyHeader(List<String> header, File toConfig) {
+
+        // Nothing to copy
+        if (header == null || header.isEmpty()) return false;
+
+        // Write header with system line breaks
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(toConfig))) {
+            for (String s : header) {
+                writer.write(s);
+                writer.newLine();
+            }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    protected List<String> parseHeader(InputStream resourceConfig) {
 
         // resourceConfig is from plugin, so it should be UTF-8
         try (BufferedReader input = new BufferedReader(new InputStreamReader(resourceConfig, Charsets.UTF_8))) {
@@ -112,25 +129,10 @@ public abstract class PluginConfigurable extends Plugin implements Configurable 
                 }
             }
 
-            // Read config file
-            byte[] content = Files.readAllBytes(toConfig.toPath());
-
-            // Write header with system line breaks
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(toConfig))) {
-                for (String s : header) {
-                    writer.write(s);
-                    writer.newLine();
-                }
-            }
-
-            // Copy rest of config as it to preserve line breaks
-            try (FileOutputStream out = new FileOutputStream(toConfig, true)) {
-                out.write(content);
-                return true;
-            }
+            return header;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
