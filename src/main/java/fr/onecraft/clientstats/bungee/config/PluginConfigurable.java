@@ -80,7 +80,6 @@ public abstract class PluginConfigurable extends Plugin implements Configurable 
         // No option with Bungeecord API, we do it ourselves
         // Note: Header is added on save
         copyDefaults(config, defaults);
-        reorderKeys(config, defaults);
     }
 
     @Override
