@@ -10,9 +10,7 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 public abstract class PluginConfigurable extends Plugin implements Configurable {
@@ -82,6 +80,7 @@ public abstract class PluginConfigurable extends Plugin implements Configurable 
         // No option with Bungeecord API, we do it ourselves
         // Note: Header is added on save
         copyDefaults(config, defaults);
+        reorderKeys(config, defaults);
     }
 
     @Override
@@ -191,6 +190,60 @@ public abstract class PluginConfigurable extends Plugin implements Configurable 
                 }
             }
         }
+
+        reorderKeys(input, def);
+    }
+
+    private boolean reorderKeys(Configuration input, Configuration def) {
+
+        // Get keys of current path
+        Collection<String> inputKeys = input.getKeys();
+        Collection<String> defKeys = def.getKeys();
+
+        // It won't work if we have more default keys
+        if (inputKeys.size() < defKeys.size()) return false;
+
+        // We ensure that input has at least all default keys
+        for (String key : defKeys) if (!inputKeys.contains(key)) return false;
+
+        // Iterate through both keys
+        Iterator<String> inputIterator = inputKeys.iterator();
+        for (String defKey : defKeys) {
+
+            // Should never happen
+            if (!inputIterator.hasNext()) return false;
+
+            String inputKey = inputIterator.next();
+
+            // We have different key
+            if (!defKey.equals(inputKey)) {
+
+                // So we need to reorder
+                Map<String, Object> cache = new HashMap<>();
+
+                // Move user config to cache
+                for (String key : inputKeys) {
+                    cache.put(key, input.get(key));
+                    input.set(key, null);
+                }
+
+                // Add in right order
+                for (String key : defKeys) {
+                    input.set(key, cache.remove(key));
+                }
+
+                // Add remaining user keys
+                for (Map.Entry<String, Object> entry : cache.entrySet()) {
+                    input.set(entry.getKey(), entry.getValue());
+                }
+
+                // Stop here, keys are reordered
+                return true;
+            }
+        }
+
+        // No reorder done
+        return true;
     }
 
     private Class getBaseClass(Object object) {

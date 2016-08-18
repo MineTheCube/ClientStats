@@ -5,7 +5,6 @@ import fr.onecraft.core.helper.Strings;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -19,7 +18,6 @@ import java.nio.file.Files;
 
 import static org.junit.Assert.assertEquals;
 
-@Ignore
 public class ConfigurationTest {
 
     @Rule
@@ -32,11 +30,12 @@ public class ConfigurationTest {
             "map:",
             "- value1",
             "- value2",
+            "test: false",
             "very:",
             "  deep:",
             "    a: 1",
             "    b: 2",
-            "test: false",
+            "    c: 3",
             ""
     );
 
@@ -46,6 +45,8 @@ public class ConfigurationTest {
             "- value1",
             "very:",
             "  deep:",
+            "    user-added-path: true",
+            "    c: '100.001'",
             "    a: 1.2",
             "test: 'ok'",
             ""
@@ -57,11 +58,13 @@ public class ConfigurationTest {
             "# 3. header",
             "map:",
             "- value1",
+            "test: false",
             "very:",
             "  deep:",
             "    a: 1.2",
             "    b: 2",
-            "test: false",
+            "    c: 3",
+            "    user-added-path: true",
             ""
     );
 
