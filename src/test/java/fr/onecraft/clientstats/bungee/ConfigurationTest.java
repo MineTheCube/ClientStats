@@ -109,7 +109,7 @@ public class ConfigurationTest {
         String result = new String(Files.readAllBytes(file.toPath()));
         println(result + "<");
 
-        assertEquals(EXPECTED_CONFIG, result);
+        assertEquals(EXPECTED_CONFIG, result.replaceAll("\r?\n", "\n"));
 
     }
 
