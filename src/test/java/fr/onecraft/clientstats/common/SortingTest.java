@@ -1,4 +1,4 @@
-package fr.onecraft.clientstats.bukkit;
+package fr.onecraft.clientstats.common;
 
 import fr.onecraft.core.tuple.Pair;
 import org.junit.Test;
