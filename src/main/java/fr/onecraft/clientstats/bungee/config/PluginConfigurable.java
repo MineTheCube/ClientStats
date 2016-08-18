@@ -52,7 +52,7 @@ public abstract class PluginConfigurable extends Plugin implements Configurable 
             ConfigurationProvider provider = ConfigurationProvider.getProvider(YamlConfiguration.class);
 
             // If we copied header, we append config to it
-            boolean append = copyHeader(parseHeader(getResourceAsStream(filename)), dest);
+            boolean append = copyHeader(parseHeader(getResourceAsStream(filename)), new FileWriter(dest));
             provider.save(config, new FileWriter(dest, append));
 
         } catch (IOException e) {
@@ -93,13 +93,13 @@ public abstract class PluginConfigurable extends Plugin implements Configurable 
 
     protected static final String COMMENT_PREFIX = "# ";
 
-    protected boolean copyHeader(List<String> header, File toConfig) {
+    protected boolean copyHeader(List<String> header, Writer dest) {
 
         // Nothing to copy
         if (header == null || header.isEmpty()) return false;
 
         // Write header with system line breaks
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(toConfig))) {
+        try (BufferedWriter writer = new BufferedWriter(dest)) {
             for (String s : header) {
                 writer.write(s);
                 writer.newLine();
@@ -112,9 +112,14 @@ public abstract class PluginConfigurable extends Plugin implements Configurable 
     }
 
     protected List<String> parseHeader(InputStream resourceConfig) {
-
         // resourceConfig is from plugin, so it should be UTF-8
-        try (BufferedReader input = new BufferedReader(new InputStreamReader(resourceConfig, Charsets.UTF_8))) {
+        return parseHeader(new InputStreamReader(resourceConfig, Charsets.UTF_8));
+    }
+
+    protected List<String> parseHeader(Reader reader) {
+
+        // We need buffered reader to read line per line
+        try (BufferedReader input = new BufferedReader(reader)) {
 
             // Read header
             List<String> header = Lists.newArrayList();
