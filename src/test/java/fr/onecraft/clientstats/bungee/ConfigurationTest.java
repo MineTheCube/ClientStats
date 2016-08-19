@@ -77,7 +77,7 @@ public class ConfigurationTest {
         // Load config
         ConfigurationProvider provider = ConfigurationProvider.getProvider(YamlConfiguration.class);
         Configuration defaults = provider.load(PLUGIN_CONFIG);
-        Configuration config = provider.load(USER_CONFIG);
+        Configuration config = provider.load(USER_CONFIG, defaults);
 
         // Set config destination
         File file = folder.newFile("config.yml");
