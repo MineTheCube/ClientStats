@@ -7,7 +7,7 @@ import fr.onecraft.clientstats.bungee.user.BungeeUserProvider;
 import fr.onecraft.clientstats.common.base.Configurable;
 import fr.onecraft.clientstats.common.core.AbstractAPI;
 import fr.onecraft.clientstats.common.user.MixedUser;
-import fr.onecraft.config.PluginConfigurable;
+import fr.onecraft.config.plugin.PluginConfigurable;
 
 public class BungeePlugin extends PluginConfigurable implements Configurable {
 
