@@ -29,6 +29,7 @@ public abstract class AbstractAPI implements ClientStatsAPI {
 
     // Statistics
     private int totalJoined = 0;
+    private int totalNewPlayers;
     private int maxOnlinePlayers = getOnlineCount();
     private long maxOnlineDate = System.currentTimeMillis();
 
@@ -91,7 +92,7 @@ public abstract class AbstractAPI implements ClientStatsAPI {
 
     @Override
     public int getTotalNewPlayers() {
-        return 0;
+        return totalNewPlayers;
     }
 
     @Override
@@ -158,8 +159,9 @@ public abstract class AbstractAPI implements ClientStatsAPI {
     }
 
     public void registerJoin(MixedUser p, boolean isNew) {
-        if (isVersionDetectionEnabled()) joined.put(p.getUniqueId(), getProtocol(p.getUniqueId()));
         totalJoined++;
+        if (isNew) totalNewPlayers++;
+        if (isVersionDetectionEnabled()) joined.put(p.getUniqueId(), getProtocol(p.getUniqueId()));
     }
 
     public void registerPlaytime(long playtimeMillis) {
