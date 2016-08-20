@@ -43,11 +43,11 @@ public class CommandHandler {
         return false;
     }
 
-    private List<String> filter(Iterable<String> list, String token) {
+    private List<String> filter(Iterable<String> list, String token, MixedUser user) {
         List<String> completions = new ArrayList<>();
-        for (String completion : list) {
-            if (token == null || completion.startsWith(token)) {
-                completions.add(completion);
+        for (String s : list) {
+            if ((token == null || s.startsWith(token)) && (user == null || !denied(user, s, false))) {
+                completions.add(s);
             }
         }
         return completions.size() == 1 ? Collections.singletonList(completions.get(0) + " ") : completions;
@@ -55,11 +55,11 @@ public class CommandHandler {
 
     public List<String> complete(MixedUser sender, List<String> args, String token) {
         if (args.size() == 1) {
-            if (args.get(0).equalsIgnoreCase("player")) {
-                return filter(MixedUser.getOnlineNames(), token);
+            if (args.get(0).equalsIgnoreCase("player") && !denied(sender, "player")) {
+                return filter(MixedUser.getOnlineNames(), token, null);
             }
         } else if (args.size() == 0) {
-            return filter(SUB_COMMANDS, token);
+            return filter(SUB_COMMANDS, token, sender);
         }
         return EMPTY_LIST;
     }
