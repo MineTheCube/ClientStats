@@ -19,11 +19,16 @@ public class BungeeUserProvider implements UserProvider {
     }
 
     @Override
-    public Collection<UUID> getOnlineUsers() {
+    public Collection<UUID> getOnlineIds() {
         List<UUID> users = new ArrayList<>(getOnlineCount());
-        for (ProxiedPlayer player : server.getPlayers()) {
-            users.add(player.getUniqueId());
-        }
+        for (ProxiedPlayer player : server.getPlayers()) users.add(player.getUniqueId());
+        return users;
+    }
+
+    @Override
+    public Collection<String> getOnlineNames() {
+        List<String> users = new ArrayList<>(getOnlineCount());
+        for (ProxiedPlayer player : server.getPlayers()) users.add(player.getName());
         return users;
     }
 

@@ -5,7 +5,9 @@ import java.util.UUID;
 
 public interface UserProvider {
 
-    Collection<UUID> getOnlineUsers();
+    Collection<UUID> getOnlineIds();
+
+    Collection<String> getOnlineNames();
 
     int getOnlineCount();
 

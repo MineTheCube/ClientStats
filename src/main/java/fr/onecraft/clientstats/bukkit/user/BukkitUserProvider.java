@@ -19,11 +19,16 @@ public class BukkitUserProvider implements UserProvider {
     }
 
     @Override
-    public Collection<UUID> getOnlineUsers() {
+    public Collection<UUID> getOnlineIds() {
         List<UUID> users = new ArrayList<>(getOnlineCount());
-        for (Player player : server.getOnlinePlayers()) {
-            users.add(player.getUniqueId());
-        }
+        for (Player player : server.getOnlinePlayers()) users.add(player.getUniqueId());
+        return users;
+    }
+
+    @Override
+    public Collection<String> getOnlineNames() {
+        List<String> users = new ArrayList<>(getOnlineCount());
+        for (Player player : server.getOnlinePlayers()) users.add(player.getName());
         return users;
     }
 

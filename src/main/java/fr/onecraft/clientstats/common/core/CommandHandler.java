@@ -12,6 +12,9 @@ import java.util.*;
 
 public class CommandHandler {
 
+    private static final List<String> EMPTY_LIST = Collections.emptyList();
+    private static final List<String> SUB_COMMANDS = Arrays.asList("stats", "version", "online", "player", "reset", "reload");
+
     private final ClientStatsAPI api;
 
     public CommandHandler(ClientStatsAPI api) {
@@ -19,11 +22,15 @@ public class CommandHandler {
     }
 
     private boolean denied(MixedUser sender, String cmd) {
+        return denied(sender, cmd, true);
+    }
+
+    private boolean denied(MixedUser sender, String cmd, boolean verbose) {
         if (sender.hasPermission(ClientStatsAPI.PERMISSION_ADMIN)
                 || sender.hasPermission(ClientStatsAPI.PERMISSION_COMMAND.replace("{cmd}", cmd))) {
             return false;
         } else {
-            api.sendMessage(sender, "error.permission");
+            if (verbose) api.sendMessage(sender, "error.permission");
             return true;
         }
     }
@@ -34,6 +41,27 @@ public class CommandHandler {
             return true;
         }
         return false;
+    }
+
+    private List<String> filter(Iterable<String> list, String token) {
+        List<String> completions = new ArrayList<>();
+        for (String completion : list) {
+            if (token == null || completion.startsWith(token)) {
+                completions.add(completion);
+            }
+        }
+        return completions.size() == 1 ? Collections.singletonList(completions.get(0) + " ") : completions;
+    }
+
+    public List<String> complete(MixedUser sender, List<String> args, String token) {
+        if (args.size() == 1) {
+            if (args.get(0).equalsIgnoreCase("player")) {
+                return filter(MixedUser.getOnlineNames(), token);
+            }
+        } else if (args.size() == 0) {
+            return filter(SUB_COMMANDS, token);
+        }
+        return EMPTY_LIST;
     }
 
     public void execute(MixedUser sender, List<String> args, String label) {
@@ -110,7 +138,7 @@ public class CommandHandler {
                 Map<Integer, Pair<String, Integer>> versions = new TreeMap<>();
                 int total = 0;
 
-                for (UUID online : MixedUser.getOnlineUsers()) {
+                for (UUID online : MixedUser.getOnlineIds()) {
                     total++;
                     int version = api.getProtocol(online);
                     Pair<String, Integer> pair = versions.get(version);
@@ -195,11 +223,10 @@ public class CommandHandler {
 
         if (!denied(sender, "help")) {
 
-            String[] subCommands = {"stats", "version", "online", "player", "reset", "reload"};
             boolean isAdmin = sender.hasPermission(ClientStatsAPI.PERMISSION_ADMIN);
             List<String> messages = new ArrayList<>();
 
-            for (String subCommand : subCommands) {
+            for (String subCommand : SUB_COMMANDS) {
                 if (isAdmin || sender.hasPermission(ClientStatsAPI.PERMISSION_COMMAND.replace("{cmd}", subCommand))) {
                     messages.add("commands.help." + subCommand);
                 }

@@ -11,8 +11,12 @@ public abstract class MixedUser {
         MixedUser.provider = provider;
     }
 
-    public static Collection<UUID> getOnlineUsers() {
-        return provider.getOnlineUsers();
+    public static Collection<UUID> getOnlineIds() {
+        return provider.getOnlineIds();
+    }
+
+    public static Collection<String> getOnlineNames() {
+        return provider.getOnlineNames();
     }
 
     public static int getOnlineCount() {

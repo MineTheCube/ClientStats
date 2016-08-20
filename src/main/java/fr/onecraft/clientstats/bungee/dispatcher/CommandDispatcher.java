@@ -5,10 +5,12 @@ import fr.onecraft.clientstats.bungee.user.BungeeUser;
 import fr.onecraft.clientstats.common.core.CommandHandler;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.api.plugin.TabExecutor;
 
 import java.util.Arrays;
+import java.util.List;
 
-public class CommandDispatcher extends Command {
+public class CommandDispatcher extends Command implements TabExecutor {
 
     private final CommandHandler handler;
 
@@ -22,4 +24,17 @@ public class CommandDispatcher extends Command {
         handler.execute(BungeeUser.of(sender), Arrays.asList(args), "cstats");
     }
 
+    @Override
+    public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
+        String token;
+        List<String> list;
+        if (args.length == 0) {
+            list = Arrays.asList(args);
+            token = null;
+        } else {
+            list = Arrays.asList(Arrays.copyOf(args, args.length - 1));
+            token = args[args.length - 1];
+        }
+        return handler.complete(BungeeUser.of(sender), list, token);
+    }
 }
