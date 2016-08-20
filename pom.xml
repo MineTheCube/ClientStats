@@ -183,10 +183,10 @@
             <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
-        <!-- BConfiguration -->
+        <!-- BungeeYAML -->
         <dependency>
             <groupId>fr.onecraft</groupId>
-            <artifactId>BConfiguration</artifactId>
+            <artifactId>BungeeYAML</artifactId>
             <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
