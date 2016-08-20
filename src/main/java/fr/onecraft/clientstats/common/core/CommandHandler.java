@@ -221,27 +221,23 @@ public class CommandHandler {
             }
         }
 
-        if (!denied(sender, "help")) {
+        boolean isAdmin = sender.hasPermission(ClientStatsAPI.PERMISSION_ADMIN);
+        List<String> messages = new ArrayList<>();
 
-            boolean isAdmin = sender.hasPermission(ClientStatsAPI.PERMISSION_ADMIN);
-            List<String> messages = new ArrayList<>();
-
-            for (String subCommand : SUB_COMMANDS) {
-                if (isAdmin || sender.hasPermission(ClientStatsAPI.PERMISSION_COMMAND.replace("{cmd}", subCommand))) {
-                    messages.add("commands.help." + subCommand);
-                }
-            }
-
-            if (messages.isEmpty()) {
-                api.sendMessage(sender, "error.permission");
-            } else {
-                api.sendMessage(sender, "commands.help.title");
-                for (String message : messages) {
-                    api.subMessage(sender, message, label);
-                }
+        for (String subCommand : SUB_COMMANDS) {
+            if (isAdmin || sender.hasPermission(ClientStatsAPI.PERMISSION_COMMAND.replace("{cmd}", subCommand))) {
+                messages.add("commands.help." + subCommand);
             }
         }
 
+        if (messages.isEmpty()) {
+            api.sendMessage(sender, "error.permission");
+        } else {
+            api.sendMessage(sender, "commands.help.title");
+            for (String message : messages) {
+                api.subMessage(sender, message, label);
+            }
+        }
     }
 
 }
