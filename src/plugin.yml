@@ -1,0 +1,11 @@
+main: fr.onecraft.clientstats.Main
+name: ClientStats
+version: 1.2
+author: MTC
+commands:
+  clientstats:
+    description: Access to ClientStats commands
+    usage: /clientstats
+    aliases:
+    - cs
+    - stats
