@@ -69,6 +69,10 @@
                             <pattern>fr.onecraft.core</pattern>
                             <shadedPattern>fr.onecraft.${pluginPackage}.core</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>fr.onecraft.config</pattern>
+                            <shadedPattern>fr.onecraft.${pluginPackage}.bungee.config</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
@@ -176,6 +180,13 @@
         <dependency>
             <groupId>fr.onecraft</groupId>
             <artifactId>XCore</artifactId>
+            <version>LATEST</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- BConfiguration -->
+        <dependency>
+            <groupId>fr.onecraft</groupId>
+            <artifactId>BConfiguration</artifactId>
             <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
