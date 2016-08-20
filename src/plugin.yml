@@ -1,0 +1,16 @@
+name: ClientStats
+main: net.onecraft.ClientStats
+version: 1.0
+author: MTC
+commands:
+  clientstats:
+    description: Access to ClientStats commands
+    usage: /clientstats
+    permission: clientstats.use
+    aliases:
+    - cs
+    - stats
+permissions:
+  clientstats.use:
+    description: Allow player to use /clientstats command
+    default: op
