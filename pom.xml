@@ -165,7 +165,7 @@
         <dependency>
             <groupId>us.myles</groupId>
             <artifactId>viaversion</artifactId>
-            <version>0.9.8-SNAPSHOT</version>
+            <version>0.9.9-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!-- ProtocolSupport -->
