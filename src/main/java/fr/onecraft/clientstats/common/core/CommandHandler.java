@@ -43,10 +43,11 @@ public class CommandHandler {
         return false;
     }
 
-    private List<String> filter(Iterable<String> list, String token, MixedUser user) {
+    private List<String> filter(Iterable<String> list, String token, MixedUser commandUser) {
         List<String> completions = new ArrayList<>();
+        token = token == null || token.isEmpty() ? null : token.toLowerCase();
         for (String s : list) {
-            if ((token == null || s.startsWith(token)) && (user == null || !denied(user, s, false))) {
+            if ((token == null || s.toLowerCase().startsWith(token)) && (commandUser == null || !denied(commandUser, s, false))) {
                 completions.add(s);
             }
         }
