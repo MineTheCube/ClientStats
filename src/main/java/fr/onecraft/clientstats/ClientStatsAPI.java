@@ -3,6 +3,7 @@ package fr.onecraft.clientstats;
 import fr.onecraft.clientstats.common.base.ServerType;
 import fr.onecraft.clientstats.common.user.MixedUser;
 
+import java.text.DateFormat;
 import java.util.Map;
 import java.util.UUID;
 
@@ -136,6 +137,15 @@ public interface ClientStatsAPI {
     void reload();
 
     /**
+     * Get start of statistics recording
+     * <p>
+     * Number returned is the amount of milliseconds since midnight, January 1, 1970 UTC
+     *
+     * @return Timestamp when the statistics started to be recorded
+     */
+    long getStartOfRecording();
+
+    /**
      * Get current server type
      *
      * Mainly used for internal purposes
@@ -143,6 +153,13 @@ public interface ClientStatsAPI {
      * @return Server type
      */
     ServerType getServerType();
+
+    /**
+     * Get datetime format specified in config
+     *
+     * @return Datetime format
+     */
+    DateFormat getDateTimeFormat();
 
     /**
      * Send a message to receiver with main prefix

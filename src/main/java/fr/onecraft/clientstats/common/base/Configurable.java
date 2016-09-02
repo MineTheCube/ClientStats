@@ -16,4 +16,6 @@ public interface Configurable {
 
     String getConfigString(String path, String def);
 
+    void setConfigValue(String path, Object value);
+
 }

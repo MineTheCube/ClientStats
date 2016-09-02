@@ -85,6 +85,24 @@ public class BukkitPlugin extends Core implements Configurable {
             saveConfig();
         }
 
+        // v2.7.6 -> v2.7.7
+        String helpKey = "messages.commands.help.stats";
+        String helpMsg = getConfig().getString(helpKey);
+        if (helpMsg.equals("&b/{1} stats &f- Statistics since server startup")) {
+            getConfig().set(helpKey, "&b/{1} stats &f- Global statistics");
+        } else if (helpMsg.contains("Statistics since server startup")) {
+            getConfig().set(helpKey, helpMsg.replace("Statistics since server startup", "Global statistics"));
+        }
+
+        // v2.7.6 -> v2.7.7
+        String statsKey = "messages.commands.stats.title";
+        String statsMsg = getConfig().getString(statsKey);
+        if (statsMsg.equals("Statistics since server startup:")) {
+            getConfig().set(statsKey, "Statistics since {1}:");
+        } else if (statsMsg.contains("server startup")) {
+            getConfig().set(statsKey, statsMsg.replace("server startup", "{1}"));
+        }
+
     }
 
     @Override
@@ -103,6 +121,11 @@ public class BukkitPlugin extends Core implements Configurable {
     @Override
     public String getConfigString(String path, String def) {
         return getConfig().getString(path, def);
+    }
+
+    @Override
+    public void setConfigValue(String path, Object value) {
+        getConfig().set(path, value);
     }
 
 }

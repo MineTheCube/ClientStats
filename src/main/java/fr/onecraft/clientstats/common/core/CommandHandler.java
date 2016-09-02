@@ -6,7 +6,6 @@ import fr.onecraft.clientstats.common.user.MixedUser;
 import fr.onecraft.core.tuple.MutablePair;
 import fr.onecraft.core.tuple.Pair;
 
-import java.text.DateFormat;
 import java.util.*;
 
 
@@ -71,7 +70,7 @@ public class CommandHandler {
             if (args.get(0).equalsIgnoreCase("stats")) {
                 if (denied(sender, "stats")) return;
 
-                api.sendMessage(sender, "commands.stats.title");
+                api.sendMessage(sender, "commands.stats.title", api.getDateTimeFormat().format(new Date(api.getStartOfRecording())));
                 api.subMessage(sender, "commands.stats.unique", api.getUniqueJoined());
 
                 if (api.getServerType() != ServerType.BUNGEE) {
@@ -80,8 +79,7 @@ public class CommandHandler {
 
                 api.subMessage(sender, "commands.stats.total", api.getTotalJoined());
 
-                String date = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault())
-                        .format(new Date(api.getMaxOnlineDate()));
+                String date = api.getDateTimeFormat().format(new Date(api.getMaxOnlineDate()));
                 api.subMessage(sender, "commands.stats.max", api.getMaxOnlinePlayers(), date);
 
                 long averagePlaytime = Math.round(api.getAveragePlaytime());
@@ -121,8 +119,8 @@ public class CommandHandler {
                 if (total == 0) {
                     api.subMessage(sender, "commands.version.empty");
                 } else {
-                    for (Pair<String, Integer> entry : versions.values()) {
-                        api.subMessage(sender, "commands.version.list", entry.getValue(), entry.getKey(), Math.round(entry.getValue() * 100F / total));
+                    for (Pair<String, Integer> pair : versions.values()) {
+                        api.subMessage(sender, "commands.version.list", pair.getRight(), pair.getLeft(), Math.round(pair.getRight() * 100F / total));
                     }
                 }
 
@@ -149,7 +147,7 @@ public class CommandHandler {
                             versions.put(version, MutablePair.of(versionName, 1));
                         }
                     } else {
-                        pair.setValue(pair.getValue() + 1);
+                        pair.setValue(pair.getRight() + 1);
                         versions.put(version, pair);
                     }
                 }
@@ -159,8 +157,8 @@ public class CommandHandler {
                 if (total == 0) {
                     api.subMessage(sender, "commands.online.empty");
                 } else {
-                    for (Pair<String, Integer> entry : versions.values()) {
-                        api.subMessage(sender, "commands.online.list", entry.getValue(), entry.getKey(), Math.round(entry.getValue() * 100F / total));
+                    for (Pair<String, Integer> pair : versions.values()) {
+                        api.subMessage(sender, "commands.online.list", pair.getRight(), pair.getLeft(), Math.round(pair.getRight() * 100F / total));
                     }
                 }
 

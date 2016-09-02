@@ -9,6 +9,9 @@
 #    use-packets: if your server accept multiple
 #        versions of Minecraft, without ViaVersion
 #        or ProtocolSupport, set it to true
+#    date-format: language for date formatting
+#        like "en" or "de", or a date format
+#        according to http://bit.ly/DateFormat
 #  
 #  messages:
 #    contains all messages, use "&" for colors
@@ -21,20 +24,21 @@
 #  
 settings:
   use-packets: false
+  date-format: "default"
 messages:
   prefix: "&9[ClientStats] &f"
   subline: "&f"
   commands:
     help:
       title: "Commands:"
-      stats: "&b/{1} stats &f- Statistics since server startup"
+      stats: "&b/{1} stats &f- Global statistics"
       version: "&b/{1} version &f- Version of players who joined"
       online: "&b/{1} online &f- Version of online players"
       player: "&b/{1} player [who] &f- Version of player"
       reset: "&b/{1} reset &f- Reset tracked stats"
       reload: "&b/{1} reload &f- Reload configuration"
     stats:
-      title: "Statistics since server startup:"
+      title: "Statistics since {1}:"
       unique: "&b{1}&f unique players joined the server."
       new: "&b{1}&f new players joined it."
       total: "&b{1}&f total connections were made."

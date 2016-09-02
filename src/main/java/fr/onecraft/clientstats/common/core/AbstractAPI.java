@@ -4,21 +4,25 @@ import fr.onecraft.clientstats.ClientStatsAPI;
 import fr.onecraft.clientstats.common.base.Configurable;
 import fr.onecraft.clientstats.common.base.VersionProvider;
 import fr.onecraft.clientstats.common.user.MixedUser;
+import fr.onecraft.core.helper.Locales;
 import fr.onecraft.core.tuple.Pair;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static fr.onecraft.clientstats.common.user.MixedUser.getOnlineCount;
 
 public abstract class AbstractAPI implements ClientStatsAPI {
 
-    // Prefix
+    // Default datetime format
+    protected final static DateFormat DEFAULT_DATETIME_FORMAT = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+
+    // Config values
     protected String PREFIX = "§9[ClientStats] §f";
     protected String SUBLINE = "§f";
+    protected DateFormat dateTimeFormat = DEFAULT_DATETIME_FORMAT;
 
     // Map of UUID -> Protocol version
     private final Map<UUID, Integer> joined = new HashMap<>();
@@ -29,9 +33,10 @@ public abstract class AbstractAPI implements ClientStatsAPI {
 
     // Statistics
     private int totalJoined = 0;
-    private int totalNewPlayers;
+    private int totalNewPlayers = 0;
     private int maxOnlinePlayers = getOnlineCount();
     private long maxOnlineDate = System.currentTimeMillis();
+    private long startOfRecording = System.currentTimeMillis();
 
     // Playtime
     private double averagePlaytime = 0;
@@ -68,6 +73,37 @@ public abstract class AbstractAPI implements ClientStatsAPI {
         PREFIX = colorize(config.getConfigString("messages.prefix", PREFIX));
         SUBLINE = colorize(config.getConfigString("messages.subline", SUBLINE));
 
+        // Get date format
+        String userFormat = config.getConfigString("settings.date-format");
+        DateFormat userDateFormat = null;
+
+        if (userFormat.equalsIgnoreCase("default")) {
+            // Default format
+            userDateFormat = DEFAULT_DATETIME_FORMAT;
+        } else {
+            Locale locale = Locales.valueOf(userFormat);
+            if (locale != null) {
+                // It's a locale
+                DateFormat dateTimeInstance = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, locale);
+                if (dateTimeInstance != null) {
+                    userDateFormat = dateTimeInstance;
+                }
+            } else if (userFormat.length() > 2) {
+                // It may be a date format
+                try {
+                    userDateFormat = new SimpleDateFormat(userFormat);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        if (userDateFormat == null) {
+            getLogger().warning("Invalid date-format value, reverting to default.");
+            dateTimeFormat = DEFAULT_DATETIME_FORMAT;
+            config.setConfigValue("settings.date-format", "default");
+            config.saveConfig();
+        } else {
+            dateTimeFormat = userDateFormat;
+        }
     }
 
     @Override
@@ -78,6 +114,7 @@ public abstract class AbstractAPI implements ClientStatsAPI {
         maxOnlineDate = System.currentTimeMillis();
         averagePlaytime = 0;
         playtimeRatio = 0;
+        startOfRecording = System.currentTimeMillis();
     }
 
     @Override
@@ -168,6 +205,16 @@ public abstract class AbstractAPI implements ClientStatsAPI {
         long playtimeSeconds = playtimeMillis / 1000;
         playtimeRatio++;
         averagePlaytime += (playtimeSeconds - averagePlaytime) / playtimeRatio;
+    }
+
+    @Override
+    public long getStartOfRecording() {
+        return startOfRecording;
+    }
+
+    @Override
+    public DateFormat getDateTimeFormat() {
+        return dateTimeFormat;
     }
 
     @Override
