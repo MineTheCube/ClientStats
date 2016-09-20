@@ -67,6 +67,8 @@ messages:
     general: "An error occured.."
 versions:
   "0": "Unknown"
+  "306": "16w38a"
+  "305": "16w36a"
   "304": "16w35a"
   "303": "16w33a"
   "302": "16w32b"
