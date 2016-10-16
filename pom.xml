@@ -23,6 +23,9 @@
         <!-- Spigot Version -->
         <spigotVersion>1.8.8-R0.1-SNAPSHOT</spigotVersion>
 
+        <!-- Bungee Version -->
+        <bungeeVersion>1.10-SNAPSHOT</bungeeVersion>
+
         <!-- Libs -->
         <libs>${basedir}/../../Libs</libs>
 
@@ -144,7 +147,7 @@
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
-            <version>1.10-SNAPSHOT</version>
+            <version>${bungeeVersion}</version>
             <scope>provided</scope>
         </dependency>
         <!-- TinyProtocol -->
