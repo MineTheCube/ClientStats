@@ -3,11 +3,16 @@ package fr.onecraft.clientstats.bungee;
 import fr.onecraft.clientstats.ClientStats;
 import fr.onecraft.clientstats.bungee.dispatcher.CommandDispatcher;
 import fr.onecraft.clientstats.bungee.dispatcher.EventDispatcher;
+import fr.onecraft.clientstats.bungee.hooks.ViaVersionDetector;
 import fr.onecraft.clientstats.bungee.user.BungeeUserProvider;
 import fr.onecraft.clientstats.common.base.Configurable;
+import fr.onecraft.clientstats.common.base.VersionProvider;
 import fr.onecraft.clientstats.common.core.AbstractAPI;
 import fr.onecraft.clientstats.common.user.MixedUser;
 import fr.onecraft.config.plugin.PluginConfigurable;
+import net.md_5.bungee.api.ProxyServer;
+
+import java.util.UUID;
 
 public class BungeePlugin extends PluginConfigurable implements Configurable {
 
@@ -20,8 +25,27 @@ public class BungeePlugin extends PluginConfigurable implements Configurable {
         // User provider
         MixedUser.setProvider(new BungeeUserProvider(getProxy()));
 
+        // Version provider
+        VersionProvider provider;
+        if (ViaVersionDetector.isUsable()) {
+            provider = ViaVersionDetector.getProvider();
+        } else {
+            provider = new VersionProvider() {
+                @Override
+                public String getProviderName() {
+                    return "Bungeecord";
+                }
+
+                @Override
+                public int getProtocol(UUID player) {
+                    return ProxyServer.getInstance().getPlayer(player).getPendingConnection().getVersion();
+                }
+            };
+        }
+        getLogger().info("Hooked into " + provider.getProviderName() + " !");
+
         // Bungeecord API
-        AbstractAPI api = new BungeeAPI(this);
+        AbstractAPI api = new BungeeAPI(this, provider);
 
         // Reload config
         api.reload();

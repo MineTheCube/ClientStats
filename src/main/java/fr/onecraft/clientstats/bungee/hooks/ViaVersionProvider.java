@@ -1,12 +1,12 @@
-package fr.onecraft.clientstats.bukkit.hooks;
+package fr.onecraft.clientstats.bungee.hooks;
 
-import org.bukkit.entity.Player;
+import fr.onecraft.clientstats.common.base.VersionProvider;
 import us.myles.ViaVersion.api.Via;
 import us.myles.ViaVersion.api.ViaAPI;
 
 import java.util.UUID;
 
-public class ViaVersionProvider extends AbstractProvider {
+public class ViaVersionProvider implements VersionProvider {
 
     private final ViaAPI viaVersion = Via.getAPI();
 
@@ -18,11 +18,6 @@ public class ViaVersionProvider extends AbstractProvider {
     @Override
     public int getProtocol(UUID player) {
         return viaVersion.getPlayerVersion(player);
-    }
-
-    @Override
-    public int getProtocol(Player p) {
-        return getProtocol(p.getUniqueId());
     }
 
 }

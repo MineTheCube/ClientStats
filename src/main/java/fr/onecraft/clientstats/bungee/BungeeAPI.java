@@ -4,27 +4,15 @@ import fr.onecraft.clientstats.common.base.ServerType;
 import fr.onecraft.clientstats.common.base.VersionProvider;
 import fr.onecraft.clientstats.common.core.AbstractAPI;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ProxyServer;
 
-import java.util.UUID;
 import java.util.logging.Logger;
 
 public class BungeeAPI extends AbstractAPI {
 
     private final BungeePlugin plugin;
 
-    public BungeeAPI(BungeePlugin plugin) {
-        super(new VersionProvider() {
-            @Override
-            public String getProviderName() {
-                return "Bungeecord";
-            }
-
-            @Override
-            public int getProtocol(UUID player) {
-                return ProxyServer.getInstance().getPlayer(player).getPendingConnection().getVersion();
-            }
-        }, plugin);
+    public BungeeAPI(BungeePlugin plugin, VersionProvider provider) {
+        super(provider, plugin);
         this.plugin = plugin;
     }
 

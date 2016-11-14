@@ -1,5 +1,6 @@
 package fr.onecraft.clientstats.bukkit.hooks;
 
+import fr.onecraft.clientstats.common.base.VersionProvider;
 import fr.onecraft.core.utils.BukkitUtils;
 
 import java.lang.reflect.Method;
@@ -16,7 +17,7 @@ public class ServerDetector {
         }
     }
 
-    public static AbstractProvider getProvider() {
+    public static VersionProvider getProvider() {
         return new ServerProvider();
     }
 }

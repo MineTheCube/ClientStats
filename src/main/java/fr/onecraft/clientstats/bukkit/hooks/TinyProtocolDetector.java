@@ -1,6 +1,7 @@
 package fr.onecraft.clientstats.bukkit.hooks;
 
 import com.comphenix.tinyprotocol.Reflection;
+import fr.onecraft.clientstats.common.base.VersionProvider;
 
 public class TinyProtocolDetector {
 
@@ -36,7 +37,7 @@ public class TinyProtocolDetector {
         return false;
     }
 
-    public static TinyProtocolProvider getProvider() {
+    public static VersionProvider getProvider() {
         return new TinyProtocolProvider();
     }
 

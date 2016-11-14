@@ -67,6 +67,10 @@ messages:
     general: "An error occured.."
 versions:
   "0": "Unknown"
+  "315": "1.11"
+  "314": "1.11-pre1"
+  "313": "16w43a, 16w44a"
+  "312": "16w42a"
   "311": "16w41a"
   "310": "16w40a"
   "309": "16w39c"

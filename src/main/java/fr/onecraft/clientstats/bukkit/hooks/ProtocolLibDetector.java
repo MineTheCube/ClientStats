@@ -1,5 +1,6 @@
 package fr.onecraft.clientstats.bukkit.hooks;
 
+import fr.onecraft.clientstats.common.base.VersionProvider;
 import org.bukkit.Bukkit;
 
 public class ProtocolLibDetector {
@@ -8,7 +9,7 @@ public class ProtocolLibDetector {
         return Bukkit.getPluginManager().isPluginEnabled("ProtocolLib");
     }
 
-    public static ProtocolLibProvider getProvider() {
+    public static VersionProvider getProvider() {
         return new ProtocolLibProvider();
     }
 

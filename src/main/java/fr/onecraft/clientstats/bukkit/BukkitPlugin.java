@@ -25,6 +25,7 @@ public class BukkitPlugin extends Core implements Configurable {
         // Version detection
         VersionProvider provider = null;
         if (ViaVersionDetector.isUsable()) provider = ViaVersionDetector.getProvider();
+        else if (ViaVersionLegacyDetector.isUsable()) provider = ViaVersionLegacyDetector.getProvider();
         else if (ProtocolSupportDetector.isUsable()) provider = ProtocolSupportDetector.getProvider();
         else if (ServerDetector.isUsable()) provider = ServerDetector.getProvider();
         else if (getConfig().getBoolean("settings.use-packets", false)) {
