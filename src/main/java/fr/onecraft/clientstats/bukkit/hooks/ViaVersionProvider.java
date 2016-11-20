@@ -22,7 +22,7 @@ public class ViaVersionProvider extends AbstractProvider {
 
     @Override
     public int getProtocol(Player p) {
-        return getProtocol(p.getUniqueId());
+        throw new AbstractMethodError("Impossible call to getProtocol(Player)");
     }
 
 }

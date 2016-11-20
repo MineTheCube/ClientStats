@@ -11,7 +11,7 @@ public abstract class AbstractProvider implements VersionProvider {
 
     public AbstractProvider() {
         if (getProviderName() != null) {
-            Core.info("Hooked into " + getProviderName() + " !");
+            Core.info("Hooked into " + getProviderName() + "!");
         }
     }
 
