@@ -1,4 +1,4 @@
-package fr.onecraft.clientstats.bukkit.hooks;
+package fr.onecraft.clientstats.bukkit.hook.base;
 
 import fr.onecraft.core.event.Events;
 import fr.onecraft.core.plugin.Core;

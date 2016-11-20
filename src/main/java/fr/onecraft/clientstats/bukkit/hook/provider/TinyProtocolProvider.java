@@ -1,7 +1,8 @@
-package fr.onecraft.clientstats.bukkit.hooks;
+package fr.onecraft.clientstats.bukkit.hook.provider;
 
 import com.comphenix.tinyprotocol.Reflection;
 import com.comphenix.tinyprotocol.TinyProtocol;
+import fr.onecraft.clientstats.bukkit.hook.base.AbstractPacketHandler;
 import fr.onecraft.core.plugin.Core;
 import io.netty.channel.Channel;
 import org.bukkit.entity.Player;

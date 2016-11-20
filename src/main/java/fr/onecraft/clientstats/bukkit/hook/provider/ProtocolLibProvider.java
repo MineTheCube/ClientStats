@@ -1,10 +1,11 @@
-package fr.onecraft.clientstats.bukkit.hooks;
+package fr.onecraft.clientstats.bukkit.hook.provider;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
+import fr.onecraft.clientstats.bukkit.hook.base.AbstractPacketHandler;
 import fr.onecraft.core.plugin.Core;
 
 public class ProtocolLibProvider extends AbstractPacketHandler {

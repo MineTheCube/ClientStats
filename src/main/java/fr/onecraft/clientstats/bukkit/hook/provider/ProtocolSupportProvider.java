@@ -1,5 +1,6 @@
-package fr.onecraft.clientstats.bukkit.hooks;
+package fr.onecraft.clientstats.bukkit.hook.provider;
 
+import fr.onecraft.clientstats.bukkit.hook.base.AbstractProvider;
 import org.bukkit.entity.Player;
 import protocolsupport.api.ProtocolSupportAPI;
 

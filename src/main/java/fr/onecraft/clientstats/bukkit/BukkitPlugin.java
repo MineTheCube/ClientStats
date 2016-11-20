@@ -3,7 +3,7 @@ package fr.onecraft.clientstats.bukkit;
 import fr.onecraft.clientstats.ClientStats;
 import fr.onecraft.clientstats.bukkit.dispatcher.CommandDispatcher;
 import fr.onecraft.clientstats.bukkit.dispatcher.EventDispatcher;
-import fr.onecraft.clientstats.bukkit.hooks.*;
+import fr.onecraft.clientstats.bukkit.hook.detector.*;
 import fr.onecraft.clientstats.bukkit.user.BukkitUserProvider;
 import fr.onecraft.clientstats.common.base.Configurable;
 import fr.onecraft.clientstats.common.base.VersionProvider;

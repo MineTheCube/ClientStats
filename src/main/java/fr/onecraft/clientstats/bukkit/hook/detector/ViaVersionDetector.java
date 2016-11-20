@@ -1,15 +1,16 @@
-package fr.onecraft.clientstats.bukkit.hooks;
+package fr.onecraft.clientstats.bukkit.hook.detector;
 
+import fr.onecraft.clientstats.bukkit.hook.provider.ViaVersionProvider;
 import fr.onecraft.clientstats.common.base.VersionProvider;
 import org.bukkit.Bukkit;
 
-public class ViaVersionLegacyDetector {
+public class ViaVersionDetector {
 
     public static boolean isUsable() {
         if (Bukkit.getPluginManager().isPluginEnabled("ViaVersion")) {
             try {
-                // ViaVersion 0.9.9 and below
-                Class.forName("us.myles.ViaVersion.api.ViaVersion");
+                // ViaVersion 1.0.0 and up
+                Class.forName("us.myles.ViaVersion.api.Via");
                 return true;
             } catch (ClassNotFoundException ignored) {}
         }
@@ -17,7 +18,7 @@ public class ViaVersionLegacyDetector {
     }
 
     public static VersionProvider getProvider() {
-        return new ViaVersionLegacyProvider();
+        return new ViaVersionProvider();
     }
 
 }

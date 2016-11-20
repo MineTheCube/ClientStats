@@ -1,5 +1,6 @@
-package fr.onecraft.clientstats.bukkit.hooks;
+package fr.onecraft.clientstats.bukkit.hook.detector;
 
+import fr.onecraft.clientstats.bukkit.hook.provider.ProtocolLibProvider;
 import fr.onecraft.clientstats.common.base.VersionProvider;
 import org.bukkit.Bukkit;
 
