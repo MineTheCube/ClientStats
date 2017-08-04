@@ -74,7 +74,7 @@ public abstract class AbstractAPI implements ClientStatsAPI {
         SUBLINE = colorize(config.getConfigString("messages.subline", SUBLINE));
 
         // Get date format
-        String userFormat = config.getConfigString("settings.date-format");
+        String userFormat = config.getConfigString("settings.date-format", "default");
         DateFormat userDateFormat = null;
 
         if (userFormat.equalsIgnoreCase("default")) {
@@ -161,11 +161,11 @@ public abstract class AbstractAPI implements ClientStatsAPI {
     public String getVersionName(int version) {
         String versionName = config.getConfigString("versions." + version);
 
-        if (versionName == null) {
+        if (versionName == null || versionName.isEmpty()) {
             getLogger().severe("Missing version: versions." + version);
             versionName = config.getConfigString("versions.0");
 
-            if (versionName == null) {
+            if (versionName == null || versionName.isEmpty()) {
                 getLogger().severe("Missing message: versions.0");
                 return "Unknown";
             }
@@ -231,11 +231,11 @@ public abstract class AbstractAPI implements ClientStatsAPI {
 
         String message = config.getConfigString("messages." + messageCode);
 
-        if (message == null) {
+        if (message == null || message.isEmpty()) {
             getLogger().warning("Missing message: " + messageCode);
             message = config.getConfigString("messages.error.general");
 
-            if (message == null) {
+            if (message == null || message.isEmpty()) {
                 message = "&cAn internal error occurred..";
             }
         }
