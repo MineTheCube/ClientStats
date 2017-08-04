@@ -18,7 +18,8 @@
 #    to disable a message, set it to ""
 #  
 #  versions:
-#    contains version name and their protocol
+#    contains version name and their protocol, as
+#    defined here: http://wiki.vg/Protocol_version_numbers
 #  
 # -------------------------------------------------- #
 #  
@@ -66,7 +67,10 @@ messages:
     not-a-player: "You aren't a player."
     general: "An error occured.."
 versions:
-  "0": "Unknown"
+  "0": "unknown"
+  "338": "1.12.1"
+  "337": "1.12.1-pre1"
+  "336": "17w31a"
   "335": "1.12"
   "334": "1.12-pre7"
   "333": "1.12-pre6"
