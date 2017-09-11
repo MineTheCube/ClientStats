@@ -1,7 +1,7 @@
 package fr.onecraft.clientstats.bukkit.hook.base;
 
 import fr.onecraft.clientstats.common.base.VersionProvider;
-import fr.onecraft.core.helper.Players;
+import fr.onecraft.core.helpers.Players;
 import fr.onecraft.core.plugin.Core;
 import org.bukkit.entity.Player;
 

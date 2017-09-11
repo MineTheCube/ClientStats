@@ -19,12 +19,12 @@ public class CommandDispatcher extends TabCommandRegister {
 
     @Override
     protected void execute(CommandUser user, List<String> args, Command command, String alias) {
-        handler.execute(BukkitUser.of(user.getCommandSender()), args, alias);
+        handler.execute(BukkitUser.of(user.getSender()), args, alias);
     }
 
     @Override
     public List<String> complete(CommandUser user, List<String> args, String token, Command cmd, String label) {
-        return handler.complete(BukkitUser.of(user.getCommandSender()), args, token);
+        return handler.complete(BukkitUser.of(user.getSender()), args, token);
     }
 
 }

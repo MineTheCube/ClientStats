@@ -4,7 +4,7 @@ import fr.onecraft.clientstats.ClientStatsAPI;
 import fr.onecraft.clientstats.common.base.Configurable;
 import fr.onecraft.clientstats.common.base.VersionProvider;
 import fr.onecraft.clientstats.common.user.MixedUser;
-import fr.onecraft.core.helper.Locales;
+import fr.onecraft.core.helpers.Locales;
 import fr.onecraft.core.tuple.Pair;
 
 import java.text.DateFormat;

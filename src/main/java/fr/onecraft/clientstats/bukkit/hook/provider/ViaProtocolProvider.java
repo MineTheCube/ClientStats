@@ -1,7 +1,7 @@
 package fr.onecraft.clientstats.bukkit.hook.provider;
 
 import fr.onecraft.clientstats.bukkit.hook.base.AbstractProvider;
-import fr.onecraft.core.helper.Players;
+import fr.onecraft.core.helpers.Players;
 import org.bukkit.entity.Player;
 import protocolsupport.api.ProtocolSupportAPI;
 import us.myles.ViaVersion.api.Via;
