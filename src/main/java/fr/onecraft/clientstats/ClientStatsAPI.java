@@ -3,8 +3,11 @@ package fr.onecraft.clientstats;
 import fr.onecraft.clientstats.common.base.ServerType;
 import fr.onecraft.clientstats.common.user.MixedUser;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.text.DateFormat;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 public interface ClientStatsAPI {
@@ -93,6 +96,7 @@ public interface ClientStatsAPI {
      *
      * @return Map of UUID -> protocol version
      */
+    @Nonnull
     Map<UUID, Integer> getProtocolJoined();
 
     /**
@@ -108,6 +112,7 @@ public interface ClientStatsAPI {
      * @param protocol The protocol number
      * @return Version name
      */
+    @Nonnull
     String getVersionName(int protocol);
 
     /**
@@ -116,7 +121,7 @@ public interface ClientStatsAPI {
      * @param player Player to get protocol version
      * @return Protocol version of player, or 0 if player is not found
      */
-    int getProtocol(UUID player);
+    int getProtocol(@Nonnull UUID player);
 
     /**
      * Get protocol version and version name of an online player
@@ -124,7 +129,8 @@ public interface ClientStatsAPI {
      * @param player Player to get version
      * @return Version of player, or null if player is not found
      */
-    Map.Entry<Integer, String> getVersion(UUID player);
+    @Nullable
+    Entry<Integer, String> getVersion(@Nonnull UUID player);
 
     /**
      * Reset current stats
@@ -152,6 +158,7 @@ public interface ClientStatsAPI {
      *
      * @return Server type
      */
+    @Nonnull
     ServerType getServerType();
 
     /**
@@ -159,6 +166,7 @@ public interface ClientStatsAPI {
      *
      * @return Datetime format
      */
+    @Nonnull
     DateFormat getDateTimeFormat();
 
     /**

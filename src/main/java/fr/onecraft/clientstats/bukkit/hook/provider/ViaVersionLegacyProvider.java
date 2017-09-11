@@ -7,6 +7,7 @@ import us.myles.ViaVersion.api.ViaVersionAPI;
 
 public class ViaVersionLegacyProvider extends AbstractProvider {
 
+    @SuppressWarnings("deprecation")
     private final ViaVersionAPI viaVersion = ViaVersion.getInstance();
 
     @Override

@@ -5,6 +5,7 @@ import fr.onecraft.clientstats.common.base.VersionProvider;
 import fr.onecraft.clientstats.common.core.AbstractAPI;
 import org.bukkit.ChatColor;
 
+import javax.annotation.Nonnull;
 import java.util.logging.Logger;
 
 public class BukkitAPI extends AbstractAPI {
@@ -16,6 +17,7 @@ public class BukkitAPI extends AbstractAPI {
         this.plugin = plugin;
     }
 
+    @Nonnull
     @Override
     public ServerType getServerType() {
         return ServerType.BUKKIT;

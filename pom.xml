@@ -82,6 +82,7 @@
                             <artifact>*:*</artifact>
                             <excludes>
                                 <exclude>META-INF/</exclude>
+                                <exclude>javax/annotation/**</exclude>
                             </excludes>
                         </filter>
                     </filters>

@@ -105,9 +105,7 @@ public class CommandHandler {
                     Pair<String, Integer> pair = versions.get(version);
                     if (pair == null) {
                         String versionName = api.getVersionName(version);
-                        if (versionName != null) {
-                            versions.put(version, MutablePair.of(versionName, 1));
-                        }
+                        versions.put(version, MutablePair.of(versionName, 1));
                     } else {
                         pair.setRight(pair.getRight() + 1);
                         versions.put(version, pair);
@@ -143,9 +141,7 @@ public class CommandHandler {
                     Pair<String, Integer> pair = versions.get(version);
                     if (pair == null) {
                         String versionName = api.getVersionName(version);
-                        if (versionName != null) {
-                            versions.put(version, MutablePair.of(versionName, 1));
-                        }
+                        versions.put(version, MutablePair.of(versionName, 1));
                     } else {
                         pair.setValue(pair.getRight() + 1);
                         versions.put(version, pair);

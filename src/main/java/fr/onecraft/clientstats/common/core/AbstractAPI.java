@@ -7,6 +7,8 @@ import fr.onecraft.clientstats.common.user.MixedUser;
 import fr.onecraft.core.helpers.Locales;
 import fr.onecraft.core.tuple.Pair;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -152,11 +154,13 @@ public abstract class AbstractAPI implements ClientStatsAPI {
         return averagePlaytime;
     }
 
+    @Nonnull
     @Override
     public Map<UUID, Integer> getProtocolJoined() {
         return Collections.unmodifiableMap(joined);
     }
 
+    @Nonnull
     @Override
     public String getVersionName(int version) {
         String versionName = config.getConfigString("versions." + version);
@@ -167,7 +171,7 @@ public abstract class AbstractAPI implements ClientStatsAPI {
 
             if (versionName == null || versionName.isEmpty()) {
                 getLogger().severe("Missing message: versions.0");
-                return "Unknown";
+                return "unknown";
             }
         }
 
@@ -175,12 +179,13 @@ public abstract class AbstractAPI implements ClientStatsAPI {
     }
 
     @Override
-    public int getProtocol(UUID player) {
+    public int getProtocol(@Nonnull UUID player) {
         return isVersionDetectionEnabled() ? provider.getProtocol(player) : 0;
     }
 
+    @Nullable
     @Override
-    public Pair<Integer, String> getVersion(UUID player) {
+    public Pair<Integer, String> getVersion(@Nonnull UUID player) {
         int version = getProtocol(player);
         if (version == 0) return null;
         String versionName = getVersionName(version);
@@ -212,6 +217,7 @@ public abstract class AbstractAPI implements ClientStatsAPI {
         return startOfRecording;
     }
 
+    @Nonnull
     @Override
     public DateFormat getDateTimeFormat() {
         return dateTimeFormat;
