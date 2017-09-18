@@ -39,9 +39,9 @@ public interface ClientStatsAPI {
      * <p>
      * Version detection is needed for these method to work:
      * <ul>
-     *     <li>{@link #getProtocolJoined}</li>
-     *     <li>{@link #getProtocol(UUID)}</li>
-     *     <li>{@link #getVersion(UUID)}</li>
+     * <li>{@link #getProtocolJoined}</li>
+     * <li>{@link #getProtocol(UUID)}</li>
+     * <li>{@link #getVersion(UUID)}</li>
      * </ul>
      *
      * @return True if you can use version methods
@@ -153,7 +153,7 @@ public interface ClientStatsAPI {
 
     /**
      * Get current server type
-     *
+     * <p>
      * Mainly used for internal purposes
      *
      * @return Server type
@@ -172,18 +172,18 @@ public interface ClientStatsAPI {
     /**
      * Send a message to receiver with main prefix
      *
-     * @param receiver Receiver of the message
+     * @param receiver    Receiver of the message
      * @param messageCode Config path of message
-     * @param args Arguments that replace {1}, {2}, etc
+     * @param args        Arguments that replace {1}, {2}, etc
      */
     void sendMessage(MixedUser receiver, String messageCode, Object... args);
 
     /**
      * Send a message to receiver with short prefix
      *
-     * @param receiver Receiver of the message
+     * @param receiver    Receiver of the message
      * @param messageCode Config path of message
-     * @param args Arguments that replace {1}, {2}, etc
+     * @param args        Arguments that replace {1}, {2}, etc
      */
     void subMessage(MixedUser receiver, String messageCode, Object... args);
 

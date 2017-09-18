@@ -13,7 +13,7 @@ public class SortingTest {
     @Test
     public void treeMap() {
 
-        Integer[] protocolOrder = new Integer[] { 47, 107, 108, 109, 110, 210 };
+        Integer[] protocolOrder = new Integer[]{47, 107, 108, 109, 110, 210};
 
         Map<Integer, Pair<String, Integer>> versions = new TreeMap<>();
         versions.put(108, Pair.of("1.9.1", 14));
