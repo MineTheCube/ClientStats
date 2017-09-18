@@ -1,3 +1,5 @@
 language: java
+install:
+- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -P profile-test
 script:
 - mvn test -B -P profile-test
