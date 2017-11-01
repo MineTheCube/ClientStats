@@ -152,7 +152,7 @@
                     <version>1.0</version>
                     <scope>compile</scope>
                 </dependency>
-                <!-- ProtocolSupport 4.27 -->
+                <!-- ProtocolSupport 4.28 -->
                 <dependency>
                     <groupId>protocolsupport</groupId>
                     <artifactId>ProtocolSupport</artifactId>
@@ -187,7 +187,7 @@
                     <scope>system</scope>
                     <systemPath>${project.basedir}/libs/XCore-1.0.jar</systemPath>
                 </dependency>
-                <!-- ProtocolSupport 4.27 -->
+                <!-- ProtocolSupport 4.28 -->
                 <dependency>
                     <groupId>protocolsupport</groupId>
                     <artifactId>ProtocolSupport</artifactId>
