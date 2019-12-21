@@ -124,22 +124,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>process-sources</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<includeArtifactIds>XCore, ProtocolSupport, BungeeYAML,
-								TinyProtocol</includeArtifactIds>
-							<outputDirectory>${project.basedir}/libs/</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 
 		</plugins>
 	</build>
