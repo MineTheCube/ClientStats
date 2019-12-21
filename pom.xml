@@ -141,7 +141,7 @@
 					<artifactId>XCore</artifactId>
 					<version>1.0.0</version>
 					<scope>system</scope>
-                    <systemPath>${project.basedir}/libs/Xcore-1.0.jar</systemPath>
+                    <systemPath>${project.basedir}/libs/XCore-1.0.jar</systemPath>
 				</dependency>
 				<!-- ProtocolSupport dev build -->
 				<dependency>
@@ -176,7 +176,7 @@
 					<artifactId>XCore</artifactId>
 					<version>1.0.0</version>
 					<scope>system</scope>
-                    <systemPath>${project.basedir}/libs/Xcore-1.0.jar</systemPath>
+                    <systemPath>${project.basedir}/libs/XCore-1.0.jar</systemPath>
 				</dependency>
 				<!-- ProtocolSupport dev -->
 				<dependency>
