@@ -68,6 +68,7 @@
 							<exclude>com.comphenix.tinyprotocol:TinyProtocol</exclude>
 							<exclude>com.google.code.gson:gson</exclude>
 							<exclude>org.apache.commons:commons-lang3</exclude>
+							<exclude>it.unimi.dsi:fastutil</exclude>
 						</excludes>
 					</artifactSet>
 					<relocations>
