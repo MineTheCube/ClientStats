@@ -10,11 +10,11 @@ public class ClientStats {
     private static ClientStatsAPI api;
 
     public static ClientStatsAPI getApi() {
-        return api;
+	return api;
     }
 
     public static void setApi(ClientStatsAPI api) {
-        ClientStats.api = api;
+	ClientStats.api = api;
     }
 
 }

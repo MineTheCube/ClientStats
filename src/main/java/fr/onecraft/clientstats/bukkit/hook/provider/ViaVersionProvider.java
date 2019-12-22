@@ -1,11 +1,12 @@
 package fr.onecraft.clientstats.bukkit.hook.provider;
 
-import fr.onecraft.clientstats.bukkit.hook.base.AbstractProvider;
+import java.util.UUID;
+
 import org.bukkit.entity.Player;
+
+import fr.onecraft.clientstats.bukkit.hook.base.AbstractProvider;
 import us.myles.ViaVersion.api.Via;
 import us.myles.ViaVersion.api.ViaAPI;
-
-import java.util.UUID;
 
 public class ViaVersionProvider extends AbstractProvider {
 
@@ -13,17 +14,17 @@ public class ViaVersionProvider extends AbstractProvider {
 
     @Override
     public String getProviderName() {
-        return "ViaVersion";
+	return "ViaVersion";
     }
 
     @Override
     public int getProtocol(UUID player) {
-        return viaVersion.getPlayerVersion(player);
+	return this.viaVersion.getPlayerVersion(player);
     }
 
     @Override
     public int getProtocol(Player p) {
-        throw new AbstractMethodError("Impossible call to getProtocol(Player)");
+	throw new AbstractMethodError("Impossible call to getProtocol(Player)");
     }
 
 }

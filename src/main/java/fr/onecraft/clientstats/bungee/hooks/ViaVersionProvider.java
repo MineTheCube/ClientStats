@@ -1,10 +1,10 @@
 package fr.onecraft.clientstats.bungee.hooks;
 
+import java.util.UUID;
+
 import fr.onecraft.clientstats.common.base.VersionProvider;
 import us.myles.ViaVersion.api.Via;
 import us.myles.ViaVersion.api.ViaAPI;
-
-import java.util.UUID;
 
 public class ViaVersionProvider implements VersionProvider {
 
@@ -12,12 +12,12 @@ public class ViaVersionProvider implements VersionProvider {
 
     @Override
     public String getProviderName() {
-        return "ViaVersion";
+	return "ViaVersion";
     }
 
     @Override
     public int getProtocol(UUID player) {
-        return viaVersion.getPlayerVersion(player);
+	return this.viaVersion.getPlayerVersion(player);
     }
 
 }

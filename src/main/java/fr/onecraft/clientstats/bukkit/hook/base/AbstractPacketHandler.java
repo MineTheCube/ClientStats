@@ -1,16 +1,5 @@
 package fr.onecraft.clientstats.bukkit.hook.base;
 
-import fr.onecraft.core.event.Events;
-import fr.onecraft.core.plugin.Core;
-import fr.onecraft.core.task.Tasks;
-import fr.onecraft.core.tuple.Pair;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import java.net.InetSocketAddress;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -18,6 +7,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import fr.onecraft.core.event.Events;
+import fr.onecraft.core.plugin.Core;
+import fr.onecraft.core.task.Tasks;
+import fr.onecraft.core.tuple.Pair;
 
 public abstract class AbstractPacketHandler extends AbstractProvider implements Listener {
 
@@ -29,57 +30,61 @@ public abstract class AbstractPacketHandler extends AbstractProvider implements 
 
     public AbstractPacketHandler() {
 
-        super();
+	super();
 
-        Events.register(this);
+	Events.register(this);
 
-        registerPacketListener();
+	this.registerPacketListener();
 
-        Core.warning("The use of " + getProviderName() + " is experimental, it may not be stable and efficient for large servers.");
+	Core.warning("The use of " + this.getProviderName()
+		+ " is experimental, it may not be stable and efficient for large servers.");
 
-        Tasks.after(1, TimeUnit.MINUTES).every(1, TimeUnit.MINUTES).async(new BukkitRunnable() {
-            @Override
-            public void run() {
+	Tasks.after(1, TimeUnit.MINUTES).every(1, TimeUnit.MINUTES).async(new BukkitRunnable() {
+	    @Override
+	    public void run() {
 
-                // In addresses we have all the current connected addresses
-                Set<InetSocketAddress> addresses = new HashSet<>();
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    addresses.add(player.getAddress());
-                }
+		// In addresses we have all the current connected
+		// addresses
+		Set<InetSocketAddress> addresses = new HashSet<>();
+		for (Player player : Bukkit.getOnlinePlayers()) {
+		    addresses.add(player.getAddress());
+		}
 
-                Iterator<Map.Entry<InetSocketAddress, Pair<Integer, Long>>> it = versions.entrySet().iterator();
-                long now = System.currentTimeMillis();
+		Iterator<Map.Entry<InetSocketAddress, Pair<Integer, Long>>> it = AbstractPacketHandler.this.versions
+			.entrySet().iterator();
+		long now = System.currentTimeMillis();
 
-                while (it.hasNext()) {
-                    Map.Entry<InetSocketAddress, Pair<Integer, Long>> entry = it.next();
-                    // Address tried to connect, but timed out (still not logged in)
-                    if (entry.getValue().getRight() + TIMEOUT < now && !addresses.contains(entry.getKey())) {
-                        it.remove();
-                    }
-                }
-            }
-        });
+		while (it.hasNext()) {
+		    Map.Entry<InetSocketAddress, Pair<Integer, Long>> entry = it.next();
+		    // Address tried to connect, but timed out (still
+		    // not logged in)
+		    if (((entry.getValue().getRight() + TIMEOUT) < now) && !addresses.contains(entry.getKey())) {
+			it.remove();
+		    }
+		}
+	    }
+	});
 
     }
 
     protected void add(InetSocketAddress address, int protocolVersion) {
-        versions.put(address, Pair.of(protocolVersion, System.currentTimeMillis()));
+	this.versions.put(address, Pair.of(protocolVersion, System.currentTimeMillis()));
     }
 
     protected void remove(InetSocketAddress address) {
-        versions.remove(address);
+	this.versions.remove(address);
     }
 
     @Override
     public int getProtocol(Player p) {
-        Pair<Integer, Long> pair = versions.get(p.getAddress());
-        return pair == null ? 0 : pair.getLeft();
+	Pair<Integer, Long> pair = this.versions.get(p.getAddress());
+	return pair == null ? 0 : pair.getLeft();
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        // Player decided to quit the server
-        versions.remove(event.getPlayer().getAddress());
+	// Player decided to quit the server
+	this.versions.remove(event.getPlayer().getAddress());
     }
 
     public abstract void registerPacketListener();

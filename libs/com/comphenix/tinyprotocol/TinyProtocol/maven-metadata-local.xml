@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.comphenix.tinyprotocol</groupId>
+  <artifactId>TinyProtocol</artifactId>
+  <versioning>
+    <versions>
+      <version>1.0.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20191221141945</lastUpdated>
+  </versioning>
+</metadata>

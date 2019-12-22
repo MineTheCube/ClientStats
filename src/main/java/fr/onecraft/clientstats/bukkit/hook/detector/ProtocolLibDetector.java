@@ -1,17 +1,18 @@
 package fr.onecraft.clientstats.bukkit.hook.detector;
 
+import org.bukkit.Bukkit;
+
 import fr.onecraft.clientstats.bukkit.hook.provider.ProtocolLibProvider;
 import fr.onecraft.clientstats.common.base.VersionProvider;
-import org.bukkit.Bukkit;
 
 public class ProtocolLibDetector {
 
     public static boolean isUsable() {
-        return Bukkit.getPluginManager().isPluginEnabled("ProtocolLib");
+	return Bukkit.getPluginManager().isPluginEnabled("ProtocolLib");
     }
 
     public static VersionProvider getProvider() {
-        return new ProtocolLibProvider();
+	return new ProtocolLibProvider();
     }
 
 }

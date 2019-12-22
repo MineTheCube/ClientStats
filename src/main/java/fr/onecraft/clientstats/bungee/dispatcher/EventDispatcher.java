@@ -13,17 +13,17 @@ public class EventDispatcher implements Listener {
     private final EventListener listener;
 
     public EventDispatcher(AbstractAPI api) {
-        this.listener = new EventListener(api);
+	this.listener = new EventListener(api);
     }
 
     @EventHandler
     public void on(PostLoginEvent e) {
-        listener.onPlayerJoin(BungeeUser.of(e.getPlayer()), false);
+	this.listener.onPlayerJoin(BungeeUser.of(e.getPlayer()), false);
     }
 
     @EventHandler
     public void on(PlayerDisconnectEvent e) {
-        listener.onPlayerQuit(BungeeUser.of(e.getPlayer()));
+	this.listener.onPlayerQuit(BungeeUser.of(e.getPlayer()));
     }
 
 }
