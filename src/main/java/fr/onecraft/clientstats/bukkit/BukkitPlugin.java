@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 
 import fr.onecraft.clientstats.ClientStats;
@@ -27,7 +26,6 @@ import fr.onecraft.core.plugin.Core;
 
 public class BukkitPlugin extends Core implements Configurable {
 
-    @SuppressWarnings("deprecation")
     @Override
     public void enable() {
 
@@ -68,17 +66,10 @@ public class BukkitPlugin extends Core implements Configurable {
 
 	// Version Provider
 	try {
-	    VersionNameProvider.reload(false, this.getLogger());
+	    VersionNameProvider.reload(true, this.getLogger());
 	} catch (IOException e) {
 	    this.getLogger().log(Level.SEVERE, "Unable to load version list", e);
 	}
-	Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
-	    try {
-		VersionNameProvider.reload(true, this.getLogger());
-	    } catch (IOException e) {
-		this.getLogger().log(Level.SEVERE, "Unable to reload version list", e);
-	    }
-	}, 86400, 86400);
 
 	// Bukkit API
 	AbstractAPI api = new BukkitAPI(provider, this);
@@ -118,7 +109,6 @@ public class BukkitPlugin extends Core implements Configurable {
 	    if (cs != null) {
 		this.getConfig().set("messages.commands.joined", null);
 	    }
-	    this.saveConfig();
 	}
 
 	// v2.7.6 -> v2.7.7
@@ -139,6 +129,19 @@ public class BukkitPlugin extends Core implements Configurable {
 	    this.getConfig().set(statsKey, statsMsg.replace("server startup", "{1}"));
 	}
 
+	// v2.9.0 -> v2.9.1
+	String reloadKey = "messages.reload";
+	String reloadMsg = this.getConfig().getString(reloadKey);
+	if (reloadMsg != null) {
+	    this.getConfig().set(reloadKey, null);
+	    this.getConfig().set("messages.reload.config", reloadMsg);
+	    this.getConfig().set("messages.reload.version-start", "Reloading version name provider...");
+	    this.getConfig().set("messages.reload.version-end", "Reloaded version name provider");
+	    this.getConfig().set("messages.reload.version-failed",
+		    "Cannot reload version name provider, version names will not work !");
+	}
+
+	this.saveConfig();
     }
 
     @Override

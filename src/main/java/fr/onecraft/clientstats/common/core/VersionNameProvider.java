@@ -3,11 +3,14 @@ package fr.onecraft.clientstats.common.core;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.concurrent.FutureCallback;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -24,8 +27,13 @@ public class VersionNameProvider {
     private static HashMap<Integer, String> versionMap = new HashMap<>();
     private static CloseableHttpClient httpClient = HttpClients.createDefault();
     private static JsonParser parser = new JsonParser();
+    private static ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    public static void reload(boolean silent, Logger logger) throws IOException {
+    private static boolean isReloading = false;
+    private static Object reloadingBlock = new Object();
+
+    public static synchronized void reload(boolean silent, Logger logger) throws IOException {
+	isReloading = true;
 	logger.log(Level.INFO, "Reloading version names...");
 	versionMap.clear();
 	if (!silent)
@@ -47,10 +55,33 @@ public class VersionNameProvider {
 		logger.log(Level.INFO,
 			obj.get("version").getAsInt() + " -> " + versionMap.get(obj.get("version").getAsInt()));
 	}
+	isReloading = false;
+	synchronized (reloadingBlock) {
+	    reloadingBlock.notifyAll();
+	}
 	logger.log(Level.INFO, "Reloaded version names.");
     }
 
+    public static void reloadLater(boolean silent, Logger logger, FutureCallback<Void> callback) {
+	executor.submit(() -> {
+	    try {
+		VersionNameProvider.reload(silent, logger);
+	    } catch (Exception e) {
+		callback.failed(e);
+	    }
+	    callback.completed(null);
+	});
+    }
+
     public static String get(int version) {
+	if (isReloading)
+	    synchronized (reloadingBlock) {
+		try {
+		    reloadingBlock.wait();
+		} catch (InterruptedException e) {
+		    return null;
+		}
+	    }
 	return versionMap.get(version);
     }
 

@@ -37,7 +37,7 @@ messages:
       online: "&b/{1} online &f- Version of online players"
       player: "&b/{1} player [who] &f- Version of player"
       reset: "&b/{1} reset &f- Reset tracked stats"
-      reload: "&b/{1} reload &f- Reload configuration"
+      reload: "&b/{1} reload &f- Reload configuration and version names"
     stats:
       title: "Statistics since {1}:"
       unique: "&b{1}&f unique players joined the server."
@@ -58,7 +58,11 @@ messages:
       other: "{1} is using &a{2}&f."
       not-found: "Player &c{1}&f wasn't found."
     reset: "All stats have been reset !"
-    reload: "Configuration reloaded !"
+    reload:
+      config: "Configuration reloaded !"
+      version-start: "Reloading version name provider..."
+      version-end: "Reloaded version name provider !"
+      version-failed: "Cannot reload version name provider, version names will not work !"
   warning:
     version-disabled: "Sorry, version detection is §cdisabled§f. Please check server logs for more information."
     exempted: "You are excluded since you have &eclientstats.exempt&f permission."

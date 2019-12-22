@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import org.apache.http.concurrent.FutureCallback;
+
 import fr.onecraft.clientstats.ClientStatsAPI;
 import fr.onecraft.clientstats.common.base.ServerType;
 import fr.onecraft.clientstats.common.user.MixedUser;
@@ -208,7 +210,28 @@ public class CommandHandler {
 		    return;
 
 		this.api.reload();
-		this.api.sendMessage(sender, "commands.reload");
+		this.api.sendMessage(sender, "commands.reload.config");
+
+		this.api.sendMessage(sender, "commands.reload.version-start");
+		VersionNameProvider.reloadLater(true, ((AbstractAPI) this.api).getLogger(), new FutureCallback<Void>() {
+
+		    @Override
+		    public void completed(Void result) {
+			api.sendMessage(sender, "commands.reload.version-end");
+		    }
+
+		    @Override
+		    public void failed(Exception ex) {
+			api.sendMessage(sender, "commands.reload.version-failed");
+			ex.printStackTrace();
+		    }
+
+		    @Override
+		    public void cancelled() {
+			api.sendMessage(sender, "commands.reload.version-failed");
+		    }
+
+		});
 
 		return;
 	    }
