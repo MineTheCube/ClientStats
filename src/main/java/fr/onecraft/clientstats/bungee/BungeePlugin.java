@@ -1,6 +1,8 @@
 package fr.onecraft.clientstats.bungee;
 
+import java.io.IOException;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import fr.onecraft.clientstats.ClientStats;
 import fr.onecraft.clientstats.bungee.dispatcher.CommandDispatcher;
@@ -10,6 +12,7 @@ import fr.onecraft.clientstats.bungee.user.BungeeUserProvider;
 import fr.onecraft.clientstats.common.base.Configurable;
 import fr.onecraft.clientstats.common.base.VersionProvider;
 import fr.onecraft.clientstats.common.core.AbstractAPI;
+import fr.onecraft.clientstats.common.core.VersionNameProvider;
 import fr.onecraft.clientstats.common.user.MixedUser;
 import fr.onecraft.config.plugin.PluginConfigurable;
 import net.md_5.bungee.api.ProxyServer;
@@ -43,6 +46,13 @@ public class BungeePlugin extends PluginConfigurable implements Configurable {
 	    };
 	}
 	this.getLogger().info("Hooked into " + provider.getProviderName() + " !");
+
+	// Version Provider
+	try {
+	    VersionNameProvider.reload(true, this.getLogger());
+	} catch (IOException e) {
+	    this.getLogger().log(Level.SEVERE, "Unable to load version list", e);
+	}
 
 	// Bungeecord API
 	AbstractAPI api = new BungeeAPI(this, provider);
