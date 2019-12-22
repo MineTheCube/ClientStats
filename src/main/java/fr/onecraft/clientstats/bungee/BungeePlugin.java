@@ -1,6 +1,5 @@
 package fr.onecraft.clientstats.bungee;
 
-import java.io.IOException;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -48,10 +47,14 @@ public class BungeePlugin extends PluginConfigurable implements Configurable {
 	this.getLogger().info("Hooked into " + provider.getProviderName() + " !");
 
 	// Version Provider
-	try {
-	    VersionNameProvider.reload(true, this.getLogger());
-	} catch (IOException e) {
-	    this.getLogger().log(Level.SEVERE, "Unable to load version list", e);
+	for (int i = 1; i <= 5; i++) {
+	    this.getLogger().info("Reloading version list... (Attempt " + i + ")");
+	    try {
+		VersionNameProvider.reload(true, this.getLogger());
+		break;
+	    } catch (Exception e) {
+		this.getLogger().log(Level.SEVERE, "Unable to load version list", e);
+	    }
 	}
 
 	// Bungeecord API

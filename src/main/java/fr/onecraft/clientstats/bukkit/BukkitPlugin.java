@@ -1,6 +1,5 @@
 package fr.onecraft.clientstats.bukkit;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -65,10 +64,14 @@ public class BukkitPlugin extends Core implements Configurable {
 	}
 
 	// Version Provider
-	try {
-	    VersionNameProvider.reload(true, this.getLogger());
-	} catch (IOException e) {
-	    this.getLogger().log(Level.SEVERE, "Unable to load version list", e);
+	for (int i = 1; i <= 5; i++) {
+	    this.getLogger().info("Reloading version list... (Attempt " + i + ")");
+	    try {
+		VersionNameProvider.reload(true, this.getLogger());
+		break;
+	    } catch (Exception e) {
+		this.getLogger().log(Level.SEVERE, "Unable to load version list", e);
+	    }
 	}
 
 	// Bukkit API

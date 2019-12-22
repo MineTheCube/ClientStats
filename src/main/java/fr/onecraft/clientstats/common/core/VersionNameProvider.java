@@ -1,6 +1,5 @@
 package fr.onecraft.clientstats.common.core;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
@@ -32,28 +31,34 @@ public class VersionNameProvider {
     private static boolean isReloading = false;
     private static Object reloadingBlock = new Object();
 
-    public static synchronized void reload(boolean silent, Logger logger) throws IOException {
+    public static synchronized void reload(boolean silent, Logger logger) throws Exception {
 	isReloading = true;
 	logger.log(Level.INFO, "Reloading version names...");
-	versionMap.clear();
-	if (!silent)
-	    logger.log(Level.INFO, "Retrieving latest version list...");
-	CloseableHttpResponse response = httpClient.execute(new HttpGet(VersionNameProvider.versionURL));
-	JsonArray versions = parser.parse(EntityUtils.toString(response.getEntity())).getAsJsonArray();
-	if (!silent)
-	    logger.log(Level.INFO, "Parsing version list...");
-	Iterator<JsonElement> it = versions.iterator();
-	while (it.hasNext()) {
-	    JsonObject obj = it.next().getAsJsonObject();
-	    if (!obj.get("usesNetty").getAsBoolean())
-		continue;
-	    versionMap.put(obj.get("version").getAsInt(),
-		    (versionMap.get(obj.get("version").getAsInt()) != null
-			    ? (versionMap.get(obj.get("version").getAsInt()) + "/")
-			    : "") + obj.get("minecraftVersion").getAsString());
+	HashMap<Integer, String> old = new HashMap<>(versionMap);
+	try {
+	    versionMap.clear();
 	    if (!silent)
-		logger.log(Level.INFO,
-			obj.get("version").getAsInt() + " -> " + versionMap.get(obj.get("version").getAsInt()));
+		logger.log(Level.INFO, "Retrieving latest version list...");
+	    CloseableHttpResponse response = httpClient.execute(new HttpGet(VersionNameProvider.versionURL));
+	    JsonArray versions = parser.parse(EntityUtils.toString(response.getEntity())).getAsJsonArray();
+	    if (!silent)
+		logger.log(Level.INFO, "Parsing version list...");
+	    Iterator<JsonElement> it = versions.iterator();
+	    while (it.hasNext()) {
+		JsonObject obj = it.next().getAsJsonObject();
+		if (!obj.get("usesNetty").getAsBoolean())
+		    continue;
+		versionMap.put(obj.get("version").getAsInt(),
+			(versionMap.get(obj.get("version").getAsInt()) != null
+				? (versionMap.get(obj.get("version").getAsInt()) + "/")
+				: "") + obj.get("minecraftVersion").getAsString());
+		if (!silent)
+		    logger.log(Level.INFO,
+			    obj.get("version").getAsInt() + " -> " + versionMap.get(obj.get("version").getAsInt()));
+	    }
+	} catch (Exception e) {
+	    versionMap = old;
+	    throw new Exception("Error while reloading version names", e);
 	}
 	isReloading = false;
 	synchronized (reloadingBlock) {

@@ -217,18 +217,18 @@ public class CommandHandler {
 
 		    @Override
 		    public void completed(Void result) {
-			api.sendMessage(sender, "commands.reload.version-end");
+			CommandHandler.this.api.sendMessage(sender, "commands.reload.version-end");
 		    }
 
 		    @Override
 		    public void failed(Exception ex) {
-			api.sendMessage(sender, "commands.reload.version-failed");
+			CommandHandler.this.api.sendMessage(sender, "commands.reload.version-failed");
 			ex.printStackTrace();
 		    }
 
 		    @Override
 		    public void cancelled() {
-			api.sendMessage(sender, "commands.reload.version-failed");
+			CommandHandler.this.api.sendMessage(sender, "commands.reload.version-failed");
 		    }
 
 		});
