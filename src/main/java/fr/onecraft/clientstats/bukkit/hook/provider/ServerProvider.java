@@ -17,7 +17,6 @@ public class ServerProvider extends AbstractProvider {
     @Override
     public int getProtocol(Player p) {
 	try {
-	    @SuppressWarnings("JavaReflectionMemberAccess")
 	    Method getHandle = p.getClass().getMethod("getHandle");
 	    Object nmsPlayer = getHandle.invoke(p);
 
