@@ -58,6 +58,10 @@ public class VersionNameProvider {
 	    }
 	} catch (Exception e) {
 	    versionMap = old;
+	    isReloading = false;
+	    synchronized (reloadingBlock) {
+		reloadingBlock.notifyAll();
+	    }
 	    throw new Exception("Error while reloading version names", e);
 	}
 	isReloading = false;
