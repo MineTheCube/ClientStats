@@ -8,6 +8,7 @@ import us.myles.ViaVersion.api.ViaAPI;
 
 public class ViaVersionProvider implements VersionProvider {
 
+    @SuppressWarnings("rawtypes")
     private final ViaAPI viaVersion = Via.getAPI();
 
     @Override

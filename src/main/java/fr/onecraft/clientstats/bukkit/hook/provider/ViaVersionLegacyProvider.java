@@ -6,9 +6,9 @@ import fr.onecraft.clientstats.bukkit.hook.base.AbstractProvider;
 import us.myles.ViaVersion.api.ViaVersion;
 import us.myles.ViaVersion.api.ViaVersionAPI;
 
+@SuppressWarnings("deprecation")
 public class ViaVersionLegacyProvider extends AbstractProvider {
 
-    @SuppressWarnings("deprecation")
     private final ViaVersionAPI viaVersion = ViaVersion.getInstance();
 
     @Override

@@ -12,6 +12,7 @@ import us.myles.ViaVersion.api.ViaAPI;
 
 public class ViaProtocolProvider extends AbstractProvider {
 
+    @SuppressWarnings("rawtypes")
     private final ViaAPI viaVersion = Via.getAPI();
 
     @Override

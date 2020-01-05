@@ -1,3 +1,5 @@
 /target/
 .classpath
 /spigot-server/
+.project
+/.settings/
