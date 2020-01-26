@@ -1,44 +1,44 @@
 package fr.onecraft.clientstats.bukkit.hook.provider;
 
-import fr.onecraft.clientstats.bukkit.hook.base.AbstractProvider;
-import org.bukkit.entity.Player;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+import org.bukkit.entity.Player;
+
+import fr.onecraft.clientstats.bukkit.hook.base.AbstractProvider;
 
 public class ServerProvider extends AbstractProvider {
 
     @Override
     public String getProviderName() {
-        return "Protocol Hack Server";
+	return "Protocol Hack Server";
     }
 
     @Override
     public int getProtocol(Player p) {
-        try {
-            @SuppressWarnings("JavaReflectionMemberAccess")
-            Method getHandle = p.getClass().getMethod("getHandle");
-            Object nmsPlayer = getHandle.invoke(p);
+	try {
+	    Method getHandle = p.getClass().getMethod("getHandle");
+	    Object nmsPlayer = getHandle.invoke(p);
 
-            Field fieldPlayerConnection = nmsPlayer.getClass().getField("playerConnection");
-            Object playerConnection = fieldPlayerConnection.get(nmsPlayer);
+	    Field fieldPlayerConnection = nmsPlayer.getClass().getField("playerConnection");
+	    Object playerConnection = fieldPlayerConnection.get(nmsPlayer);
 
-            Field fieldNetworkManager = playerConnection.getClass().getField("networkManager");
-            Object networkManager = fieldNetworkManager.get(playerConnection);
+	    Field fieldNetworkManager = playerConnection.getClass().getField("networkManager");
+	    Object networkManager = fieldNetworkManager.get(playerConnection);
 
-            Method getVersion = networkManager.getClass().getMethod("getVersion");
-            Object value = getVersion.invoke(networkManager);
+	    Method getVersion = networkManager.getClass().getMethod("getVersion");
+	    Object value = getVersion.invoke(networkManager);
 
-            Integer version = (Integer) value;
+	    Integer version = (Integer) value;
 
-            if (version != null) {
-                return version;
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+	    if (version != null) {
+		return version;
+	    }
+	} catch (Exception ex) {
+	    ex.printStackTrace();
+	}
 
-        return 0;
+	return 0;
     }
 
 }

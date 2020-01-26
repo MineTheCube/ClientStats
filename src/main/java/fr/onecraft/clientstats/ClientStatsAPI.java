@@ -1,14 +1,15 @@
 package fr.onecraft.clientstats;
 
-import fr.onecraft.clientstats.common.base.ServerType;
-import fr.onecraft.clientstats.common.user.MixedUser;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.text.DateFormat;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import fr.onecraft.clientstats.common.base.ServerType;
+import fr.onecraft.clientstats.common.user.MixedUser;
 
 public interface ClientStatsAPI {
 
@@ -83,7 +84,8 @@ public interface ClientStatsAPI {
     /**
      * Get date when maximum of online players was reached
      * <p>
-     * Number returned is the amount of milliseconds since midnight, January 1, 1970 UTC
+     * Number returned is the amount of milliseconds since midnight, January 1, 1970
+     * UTC
      *
      * @return Timestamp of maximum player count
      */
@@ -145,7 +147,8 @@ public interface ClientStatsAPI {
     /**
      * Get start of statistics recording
      * <p>
-     * Number returned is the amount of milliseconds since midnight, January 1, 1970 UTC
+     * Number returned is the amount of milliseconds since midnight, January 1, 1970
+     * UTC
      *
      * @return Timestamp when the statistics started to be recorded
      */

@@ -1,285 +1,254 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.onecraft</groupId>
-    <artifactId>ClientStats</artifactId>
-    <version>2.9.0</version>
+	<groupId>fr.onecraft</groupId>
+	<artifactId>ClientStats</artifactId>
+	<version>2.9.1-SNAPSHOT</version>
 
-    <properties>
-        <!-- Package relocation -->
-        <pluginPackage>clientstats</pluginPackage>
+	<properties>
+		<!-- Package relocation -->
+		<pluginPackage>clientstats</pluginPackage>
 
-        <!-- Project Properties -->
-        <projectEncoding>UTF-8</projectEncoding>
-        <project.build.sourceEncoding>${projectEncoding}</project.build.sourceEncoding>
-        <project.build.outputEncoding>${projectEncoding}</project.build.outputEncoding>
+		<!-- Project Properties -->
+		<projectEncoding>UTF-8</projectEncoding>
+		<project.build.sourceEncoding>${projectEncoding}</project.build.sourceEncoding>
+		<project.build.outputEncoding>${projectEncoding}</project.build.outputEncoding>
 
-        <!-- JDK Version -->
-        <jdkVersion>1.7</jdkVersion>
+		<!-- JDK Version -->
+		<jdkVersion>1.8</jdkVersion>
 
-        <!-- Spigot Version -->
-        <spigotVersion>1.14.4-R0.1-SNAPSHOT</spigotVersion>
+		<!-- Spigot Version -->
+		<spigotVersion>1.14.4-R0.1-SNAPSHOT</spigotVersion>
 
-        <!-- Bungee Version -->
-        <bungeeVersion>1.14-SNAPSHOT</bungeeVersion>
+		<!-- Bungee Version -->
+		<bungeeVersion>1.14-SNAPSHOT</bungeeVersion>
 
-        <!-- Libs -->
-        <libs>${basedir}/../../Libs</libs>
+	</properties>
 
-        <!-- Export -->
-        <export>${basedir}/../../../MC/Plugins</export>
-    </properties>
+	<build>
+		<finalName>${project.name}</finalName>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<defaultGoal>clean package</defaultGoal>
 
-    <build>
-        <finalName>${project.name}</finalName>
-        <sourceDirectory>src/main/java</sourceDirectory>
-        <defaultGoal>clean install</defaultGoal>
+		<resources>
+			<resource>
+				<targetPath>.</targetPath>
+				<filtering>true</filtering>
+				<directory>src/main/resources/</directory>
+				<includes>
+					<include>**/*.yml</include>
+				</includes>
+			</resource>
+		</resources>
 
-        <resources>
-            <resource>
-                <targetPath>.</targetPath>
-                <filtering>true</filtering>
-                <directory>src/main/resources/</directory>
-                <includes>
-                    <include>**/*.yml</include>
-                </includes>
-            </resource>
-        </resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>${jdkVersion}</source>
+					<target>${jdkVersion}</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.4.1</version>
+				<configuration>
+					<createDependencyReducedPom>false</createDependencyReducedPom>
+					<artifactSet>
+						<excludes>
+							<exclude>com.github.ProtocolSupport:ProtocolSupport</exclude>
+							<!-- <exclude>fr.onecraft:BungeeYAML</exclude> -->
+							<exclude>com.comphenix.tinyprotocol:TinyProtocol</exclude>
+							<exclude>com.google.code.gson:gson</exclude>
+							<exclude>org.apache.commons:commons-lang3</exclude>
+							<exclude>it.unimi.dsi:fastutil</exclude>
+						</excludes>
+					</artifactSet>
+					<relocations>
+						<relocation>
+							<pattern>fr.onecraft.core</pattern>
+							<shadedPattern>fr.onecraft.${pluginPackage}.core</shadedPattern>
+						</relocation>
+						<relocation>
+							<pattern>fr.onecraft.config</pattern>
+							<shadedPattern>fr.onecraft.${pluginPackage}.bungee.config</shadedPattern>
+						</relocation>
+					</relocations>
+					<filters>
+						<filter>
+							<artifact>*:*</artifact>
+							<excludes>
+								<exclude>META-INF/</exclude>
+								<exclude>javax/annotation/**</exclude>
+							</excludes>
+						</filter>
+					</filters>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>${jdkVersion}</source>
-                    <target>${jdkVersion}</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.1</version>
-                <configuration>
-                    <minimizeJar>true</minimizeJar>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <relocations>
-                        <relocation>
-                            <pattern>fr.onecraft.core</pattern>
-                            <shadedPattern>fr.onecraft.${pluginPackage}.core</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>fr.onecraft.config</pattern>
-                            <shadedPattern>fr.onecraft.${pluginPackage}.bungee.config</shadedPattern>
-                        </relocation>
-                    </relocations>
-                    <filters>
-                        <filter>
-                            <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>META-INF/</exclude>
-                                <exclude>javax/annotation/**</exclude>
-                            </excludes>
-                        </filter>
-                    </filters>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <id>copy-files-on-build</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${export}</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.build.directory}</directory>
-                                    <include>${project.build.finalName}.jar</include>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeArtifactIds>XCore, ProtocolSupport, BungeeYAML, TinyProtocol</includeArtifactIds>
-                            <outputDirectory>${project.basedir}/libs/</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+	<profiles>
+		<profile>
+			<id>profile-dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<dependencies>
+				<!-- XCore -->
+				<dependency>
+					<groupId>fr.onecraft</groupId>
+					<artifactId>XCore</artifactId>
+					<version>1.0.0</version>
+				</dependency>
+				<!-- ProtocolSupport dev build -->
+				<dependency>
+					<groupId>com.github.ProtocolSupport</groupId>
+					<artifactId>ProtocolSupport</artifactId>
+					<version>2356a84f71</version>
+				</dependency>
+				<!-- BungeeYAML -->
+				<dependency>
+					<groupId>fr.onecraft</groupId>
+					<artifactId>BungeeYAML</artifactId>
+					<version>1.0.0</version>
+				</dependency>
+				<!-- TinyProtocol -->
+				<dependency>
+					<groupId>com.comphenix.tinyprotocol</groupId>
+					<artifactId>TinyProtocol</artifactId>
+					<version>1.0.0-SNAPSHOT</version>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>profile-test</id>
+			<dependencies>
+				<!-- XCore -->
+				<dependency>
+					<groupId>fr.onecraft</groupId>
+					<artifactId>XCore</artifactId>
+					<version>1.0.0</version>
+				</dependency>
+				<!-- ProtocolSupport dev -->
+				<dependency>
+					<groupId>com.github.ProtocolSupport</groupId>
+					<artifactId>ProtocolSupport</artifactId>
+					<version>2356a84f71</version>
+				</dependency>
+				<!-- BungeeYAML -->
+				<dependency>
+					<groupId>fr.onecraft</groupId>
+					<artifactId>BungeeYAML</artifactId>
+					<version>1.0.0</version>
+				</dependency>
+				<!-- TinyProtocol -->
+				<dependency>
+					<groupId>com.comphenix.tinyprotocol</groupId>
+					<artifactId>TinyProtocol</artifactId>
+					<version>1.0.0-SNAPSHOT</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 
-        </plugins>
-    </build>
-
-    <profiles>
-        <profile>
-            <id>profile-dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <dependencies>
-                <!-- XCore -->
-                <dependency>
-                    <groupId>fr.onecraft</groupId>
-                    <artifactId>XCore</artifactId>
-                    <version>1.0</version>
-                    <scope>compile</scope>
-                </dependency>
-                <!-- ProtocolSupport 4.28 -->
-                <dependency>
-                    <groupId>protocolsupport</groupId>
-                    <artifactId>ProtocolSupport</artifactId>
-                    <version>LATEST</version>
-                    <scope>system</scope>
-                    <systemPath>${libs}/ProtocolSupport/latest/ProtocolSupport.jar</systemPath>
-                </dependency>
-                <!-- BungeeYAML -->
-                <dependency>
-                    <groupId>fr.onecraft</groupId>
-                    <artifactId>BungeeYAML</artifactId>
-                    <version>1.0</version>
-                    <scope>compile</scope>
-                </dependency>
-                <!-- TinyProtocol -->
-                <dependency>
-                    <groupId>com.comphenix.tinyprotocol</groupId>
-                    <artifactId>TinyProtocol</artifactId>
-                    <version>1.0.0-SNAPSHOT</version>
-                    <scope>compile</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>profile-test</id>
-            <dependencies>
-                <!-- XCore -->
-                <dependency>
-                    <groupId>fr.onecraft</groupId>
-                    <artifactId>XCore</artifactId>
-                    <version>1.0</version>
-                    <scope>system</scope>
-                    <systemPath>${project.basedir}/libs/XCore-1.0.jar</systemPath>
-                </dependency>
-                <!-- ProtocolSupport 4.28 -->
-                <dependency>
-                    <groupId>protocolsupport</groupId>
-                    <artifactId>ProtocolSupport</artifactId>
-                    <version>LATEST</version>
-                    <scope>system</scope>
-                    <systemPath>${project.basedir}/libs/ProtocolSupport-LATEST.jar</systemPath>
-                </dependency>
-                <!-- BungeeYAML -->
-                <dependency>
-                    <groupId>fr.onecraft</groupId>
-                    <artifactId>BungeeYAML</artifactId>
-                    <version>1.0</version>
-                    <scope>system</scope>
-                    <systemPath>${project.basedir}/libs/BungeeYAML-1.0.jar</systemPath>
-                </dependency>
-                <!-- TinyProtocol -->
-                <dependency>
-                    <groupId>com.comphenix.tinyprotocol</groupId>
-                    <artifactId>TinyProtocol</artifactId>
-                    <version>1.0.0-SNAPSHOT</version>
-                    <scope>system</scope>
-                    <systemPath>${project.basedir}/libs/TinyProtocol-1.0.0-SNAPSHOT.jar</systemPath>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
-
-    <repositories>
-        <!-- Spigot -->
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <!-- Bungeecord -->
-        <repository>
-            <id>bungeecord-repo</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-        <!-- ProtocolLib / TinyProtocol -->
-        <repository>
-            <id>dmulloy2-repo</id>
-            <url>http://repo.dmulloy2.net/content/groups/public/</url>
-        </repository>
-        <!-- ViaVersion -->
-        <repository>
-            <id>viaversion-repo</id>
-            <url>https://repo.viaversion.com/</url>
-        </repository>
-    </repositories>
-    <dependencies>
-        <!-- Spigot API -->
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>${spigotVersion}</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Bungeecord API -->
-        <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-            <version>${bungeeVersion}</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- ProtocolLib -->
-        <dependency>
-            <groupId>com.comphenix.protocol</groupId>
-            <artifactId>ProtocolLib-API</artifactId>
-            <version>4.3.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- ViaVersion -->
-        <dependency>
-            <groupId>us.myles</groupId>
-            <artifactId>viaversion</artifactId>
-            <version>2.1.3</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Test unit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- Test mocking -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+	<repositories>
+		<!-- Spigot -->
+		<repository>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+		<!-- Bungeecord -->
+		<repository>
+			<id>bungeecord-repo</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
+		<!-- ProtocolLib / TinyProtocol -->
+		<repository>
+			<id>dmulloy2-repo</id>
+			<url>http://repo.dmulloy2.net/content/groups/public/</url>
+		</repository>
+		<!-- ViaVersion -->
+		<repository>
+			<id>viaversion-repo</id>
+			<url>https://repo.viaversion.com/</url>
+		</repository>
+		<!-- JitPack -->
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+		<!-- Local Libraries -->
+		<repository>
+			<id>local-repo</id>
+			<url>file://${project.basedir}/libs</url>
+		</repository>
+	</repositories>
+	<dependencies>
+		<!-- Spigot API -->
+		<dependency>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-api</artifactId>
+			<version>${spigotVersion}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Bungeecord API -->
+		<dependency>
+			<groupId>net.md-5</groupId>
+			<artifactId>bungeecord-api</artifactId>
+			<version>${bungeeVersion}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- ProtocolLib -->
+		<dependency>
+			<groupId>com.comphenix.protocol</groupId>
+			<artifactId>ProtocolLib-API</artifactId>
+			<version>4.3.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- ViaVersion -->
+		<dependency>
+			<groupId>us.myles</groupId>
+			<artifactId>viaversion</artifactId>
+			<version>2.1.3</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- HttpClient -->
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.10</version>
+		</dependency>
+		<!-- Test unit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- Test mocking -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.19</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 </project>
