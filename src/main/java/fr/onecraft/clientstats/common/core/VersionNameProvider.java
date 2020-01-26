@@ -83,14 +83,6 @@ public class VersionNameProvider {
     }
 
     public static String get(int version) {
-	if (isReloading)
-	    synchronized (reloadingBlock) {
-		try {
-		    reloadingBlock.wait();
-		} catch (InterruptedException e) {
-		    return null;
-		}
-	    }
 	return versionMap.get(version);
     }
 
