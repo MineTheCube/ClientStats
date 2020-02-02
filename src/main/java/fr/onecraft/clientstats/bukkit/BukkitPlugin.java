@@ -32,7 +32,6 @@ public class BukkitPlugin extends Core implements Configurable {
         else if (getConfig().getBoolean("settings.use-packets", false)) {
 
             if (ProtocolLibDetector.isUsable()) provider = ProtocolLibDetector.getProvider();
-            else if (TinyProtocolDetector.isUsable()) provider = TinyProtocolDetector.getProvider();
             else {
                 severe("---------------------");
                 severe("\"use-packets\" is enabled, but we can't find a way to use them.");
