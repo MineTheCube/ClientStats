@@ -141,9 +141,6 @@
     <profiles>
         <profile>
             <id>profile-dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <dependencies>
                 <!-- XCore -->
                 <dependency>
@@ -170,7 +167,10 @@
             </dependencies>
         </profile>
         <profile>
-            <id>profile-test</id>
+            <id>profile-build</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <dependencies>
                 <!-- XCore -->
                 <dependency>

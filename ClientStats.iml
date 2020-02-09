@@ -42,16 +42,32 @@
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-all:2.0.2-beta" level="project" />
-    <orderEntry type="library" name="Maven: fr.onecraft:XCore:1.0" level="project" />
     <orderEntry type="module-library">
-      <library name="Maven: protocolsupport:ProtocolSupport:LATEST">
+      <library name="Maven: fr.onecraft:XCore:1.0">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/@Libraries/ProtocolSupport/latest/ProtocolSupport.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/XCore-1.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Maven: fr.onecraft:BungeeYAML:1.0" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: protocolsupport:ProtocolSupport:LATEST">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/ProtocolSupport-LATEST.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: fr.onecraft:BungeeYAML:1.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/BungeeYAML-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
