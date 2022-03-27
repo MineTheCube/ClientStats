@@ -227,46 +227,46 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>${spigotVersion}</version>
+            <version>latest</version>
             <scope>provided</scope>
         </dependency>
         <!-- Bungeecord API -->
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
-            <version>${bungeeVersion}</version>
+            <version>latest</version>
             <scope>provided</scope>
         </dependency>
         <!-- ProtocolLib -->
         <dependency>
           <groupId>com.comphenix.protocol</groupId>
           <artifactId>ProtocolLib</artifactId>
-          <version>4.8.0</version>
+          <version>latest</version>
         </dependency>
         <!-- ViaVersion -->
         <dependency>
             <groupId>com.viaversion</groupId>
             <artifactId>viaversion-api</artifactId>
-            <version>4.2.1</version>
+            <version>latest</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>us.myles</groupId>
             <artifactId>viaversion-api</artifactId>
-            <version>4.0.0-21w16a</version>
+            <version>latest</version>
             <scope>provided</scope>
         </dependency>
         <!-- Test mocking -->
         <dependency>
            <groupId>org.mockito</groupId>
            <artifactId>mockito-all</artifactId>
-           <version>2.0.2-beta</version>
+           <version>latest</version>
         </dependency>
         <!-- Test unit -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <version>latest</version>
         </dependency>
     </dependencies>
 
