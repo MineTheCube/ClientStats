@@ -24,7 +24,7 @@
         <spigotVersion>1.15.2-R0.1-SNAPSHOT</spigotVersion>
 
         <!-- Bungee Version -->
-        <bungeeVersion>1.15-SNAPSHOT</bungeeVersion>
+        <bungeeVersion>1.16-R0.4</bungeeVersion>
 
         <!-- Libs -->
         <libs>${basedir}/@Libraries</libs>
