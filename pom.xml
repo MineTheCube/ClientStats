@@ -18,13 +18,13 @@
         <project.build.outputEncoding>${projectEncoding}</project.build.outputEncoding>
 
         <!-- JDK Version -->
-        <jdkVersion>1.8</jdkVersion>
+        <jdkVersion>17</jdkVersion>
 
         <!-- Spigot Version -->
         <spigotVersion>1.18.2-R0.1-SNAPSHOT</spigotVersion>
 
         <!-- Bungee Version -->
-        <bungeeVersion>1.18-R0.1-SNAPSHOT</bungeeVersion>
+        <bungeeVersion>1.18.2-R0.1-SNAPSHOT</bungeeVersion>
 
         <!-- Libs -->
         <libs>${basedir}/@Libraries</libs>
