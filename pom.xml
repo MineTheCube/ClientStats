@@ -204,7 +204,7 @@
         <!-- Spigot -->
         <repository>
             <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots</url>
         </repository>
         <!-- Bungeecord -->
         <repository>
@@ -213,13 +213,13 @@
         </repository>
         <!-- ProtocolLib -->
         <repository>
-            <id>dmulloy2-repo</id>
-            <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
+          <id>dmulloy2-repo</id>
+          <url>https://repo.dmulloy2.net/repository/public</url>
         </repository>
         <!-- ViaVersion -->
         <repository>
             <id>viaversion-repo</id>
-            <url>https://repo.viaversion.com/</url>
+            <url>https://repo.viaversion.com</url>
         </repository>
     </repositories>
     <dependencies>
@@ -239,16 +239,15 @@
         </dependency>
         <!-- ProtocolLib -->
         <dependency>
-            <groupId>com.comphenix.protocol</groupId>
-            <artifactId>ProtocolLib</artifactId>
-            <version>4.8.0</version>
-            <scope>provided</scope>
+          <groupId>com.comphenix.protocol</groupId>
+          <artifactId>ProtocolLib</artifactId>
+          <version>4.8.0</version>
         </dependency>
         <!-- ViaVersion -->
         <dependency>
-            <groupId>us.myles</groupId>
-            <artifactId>viaversion</artifactId>
-            <version>4.0.0-21w16a</version>
+            <groupId>com.viaversion</groupId>
+            <artifactId>viaversion-api</artifactId>
+            <version>LATEST</version>
             <scope>provided</scope>
         </dependency>
         <!-- Test unit -->
