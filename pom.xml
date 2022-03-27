@@ -6,7 +6,7 @@
 
     <groupId>fr.onecraft</groupId>
     <artifactId>ClientStats</artifactId>
-    <version>2.11.2</version>
+    <version>2.11.3</version>
 
     <properties>
         <!-- Package relocation -->
@@ -21,10 +21,10 @@
         <jdkVersion>1.8</jdkVersion>
 
         <!-- Spigot Version -->
-        <spigotVersion>1.15.2-R0.1-SNAPSHOT</spigotVersion>
+        <spigotVersion>1.18.2-R0.1-SNAPSHOT</spigotVersion>
 
         <!-- Bungee Version -->
-        <bungeeVersion>1.15-SNAPSHOT</bungeeVersion>
+        <bungeeVersion>1.18-R0.1-SNAPSHOT</bungeeVersion>
 
         <!-- Libs -->
         <libs>${basedir}/@Libraries</libs>
@@ -53,7 +53,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.10.1</version>
                 <configuration>
                     <source>${jdkVersion}</source>
                     <target>${jdkVersion}</target>
@@ -63,7 +63,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.1</version>
+                <version>3.2.4</version>
                 <configuration>
                     <minimizeJar>true</minimizeJar>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
@@ -98,7 +98,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>copy-files-on-build</id>
@@ -209,17 +209,17 @@
         <!-- Bungeecord -->
         <repository>
             <id>bungeecord-repo</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
         <!-- ProtocolLib -->
         <repository>
             <id>dmulloy2-repo</id>
-            <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
+            <url>https://repo.dmulloy2.net/repository/public/</url>
         </repository>
         <!-- ViaVersion -->
         <repository>
             <id>viaversion-repo</id>
-            <url>https://repo.viaversion.com/</url>
+            <url>https://repo.viaversion.com</url>
         </repository>
     </repositories>
     <dependencies>
@@ -239,31 +239,34 @@
         </dependency>
         <!-- ProtocolLib -->
         <dependency>
-            <groupId>com.comphenix.protocol</groupId>
-            <artifactId>ProtocolLib</artifactId>
-            <version>4.5.0</version>
-            <scope>provided</scope>
+          <groupId>com.comphenix.protocol</groupId>
+          <artifactId>ProtocolLib</artifactId>
+          <version>4.8.0</version>
         </dependency>
         <!-- ViaVersion -->
         <dependency>
-            <groupId>us.myles</groupId>
-            <artifactId>viaversion</artifactId>
-            <version>3.0.1</version>
+            <groupId>com.viaversion</groupId>
+            <artifactId>viaversion-api</artifactId>
+            <version>4.2.1</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>us.myles</groupId>
+            <artifactId>viaversion-api</artifactId>
+            <version>4.0.0-21w16a</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Test mocking -->
+        <dependency>
+           <groupId>org.mockito</groupId>
+           <artifactId>mockito-all</artifactId>
+           <version>2.0.2-beta</version>
         </dependency>
         <!-- Test unit -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.1</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- Test mocking -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
+            <version>4.13.2</version>
         </dependency>
     </dependencies>
 
