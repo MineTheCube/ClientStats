@@ -253,7 +253,7 @@
         <dependency>
             <groupId>us.myles</groupId>
             <artifactId>viaversion-api</artifactId>
-            <version>4.2.1</version>
+            <version>4.0.0-21w16a</version>
             <scope>provided</scope>
         </dependency>
         <!-- Test mocking -->
