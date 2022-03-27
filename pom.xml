@@ -227,14 +227,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>latest</version>
+            <version>${spigotVersion}</version>
             <scope>provided</scope>
         </dependency>
         <!-- Bungeecord API -->
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
-            <version>latest</version>
+            <version>${bungeeVersion}</version>
             <scope>provided</scope>
         </dependency>
         <!-- ProtocolLib -->
