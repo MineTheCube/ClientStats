@@ -219,7 +219,7 @@
         <!-- ViaVersion -->
         <repository>
             <id>viaversion-repo</id>
-            <url>https://repo.viaversion.com/</url>
+            <url>https://repo.viaversion.com</url>
         </repository>
     </repositories>
     <dependencies>
