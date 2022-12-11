@@ -1,8 +1,8 @@
 package fr.onecraft.clientstats.bungee.hooks;
 
 import fr.onecraft.clientstats.common.base.VersionProvider;
-import us.myles.ViaVersion.api.Via;
-import us.myles.ViaVersion.api.ViaAPI;
+import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.api.ViaAPI;
 
 import java.util.UUID;
 

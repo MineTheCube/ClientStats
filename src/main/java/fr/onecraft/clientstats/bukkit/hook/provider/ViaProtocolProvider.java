@@ -4,8 +4,8 @@ import fr.onecraft.clientstats.bukkit.hook.base.AbstractProvider;
 import fr.onecraft.core.helpers.Players;
 import org.bukkit.entity.Player;
 import protocolsupport.api.ProtocolSupportAPI;
-import us.myles.ViaVersion.api.Via;
-import us.myles.ViaVersion.api.ViaAPI;
+import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.api.ViaAPI;
 
 import java.util.UUID;
 
