@@ -68,6 +68,7 @@ messages:
     general: "An error occured.."
 versions:
   "0": "unknown"
+  "770": "1.21.5"
   "769": "1.21.4"
   "768": "1.21.2, 1.21.3"
   "767": "1.21, 1.21.1"
